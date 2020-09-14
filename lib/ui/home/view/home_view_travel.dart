@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:travel_blog/ui/home/viewmodel/home_viewmodel.dart';
+import 'package:travel_blog/ui/home/view/home_food.dart';
+import 'package:travel_blog/ui/home/view/home_travel.dart';
+import 'package:travel_blog/ui/home/viewmodel/home_viewmodel_travel.dart';
 import 'package:travel_blog/core/constants/constants.dart';
 
-class HomeView extends HomeViewModel {
+class HomeViewTravel extends HomeViewModelTravel {
   double get appBarButtonSize => MediaQuery.of(context).size.width * 0.08;
   double get appBarTitleSize => MediaQuery.of(context).size.width * 0.08;
   EdgeInsets get appBarPadding =>
@@ -14,10 +16,15 @@ class HomeView extends HomeViewModel {
     return Scaffold(
       appBar: buildAppBar(),
       body: buildListViewStories(),
-      bottomNavigationBar: BottomNavigationBar(items: [
-        buildBottomNavigationBarItem('Food', Icons.ac_unit),
-        buildBottomNavigationBarItem('Travel', Icons.ac_unit),
-      ]),
+      bottomNavigationBar: BottomNavigationBar(
+          onTap: (value) {
+            Navigator.pop(
+                context, MaterialPageRoute(builder: (context) => HomeTravel()));
+          },
+          items: [
+            buildBottomNavigationBarItem('Food', Icons.ac_unit),
+            buildBottomNavigationBarItem('Travel', Icons.ac_unit),
+          ]),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
