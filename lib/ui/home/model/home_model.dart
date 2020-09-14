@@ -1,13 +1,13 @@
 import 'package:travel_blog/core/base/model/base_model.dart';
 
-class DetailModel extends BaseModel<DetailModel> {
+class HomeModel extends BaseModel<HomeModel> {
   String category;
   String count;
   String imgurl;
 
-  DetailModel({this.category, this.count, this.imgurl});
+  HomeModel({this.category, this.count, this.imgurl});
 
-  DetailModel.fromJson(Map<String, dynamic> json) {
+  HomeModel.fromJson(Map<String, dynamic> json) {
     category = json['category'];
     count = json['count'];
     imgurl = json['imgurl'];
@@ -22,7 +22,7 @@ class DetailModel extends BaseModel<DetailModel> {
   }
 
   @override
-  DetailModel fromJson(Map<String, Object> json) {
-    return DetailModel.fromJson(json);
+  HomeModel fromJson(Map<String, Object> json) {
+    return HomeModel.fromJson(json);
   }
 }

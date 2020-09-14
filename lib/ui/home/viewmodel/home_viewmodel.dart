@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:travel_blog/ui/detail/model/home_model.dart';
-import 'package:travel_blog/ui/detail/service/IHome_service.dart';
-import 'package:travel_blog/ui/detail/service/home_service.dart';
-import 'package:travel_blog/ui/detail/view/home.dart';
+import 'package:travel_blog/ui/home/model/home_model.dart';
+import 'package:travel_blog/ui/home/service/IHome_service.dart';
+import 'package:travel_blog/ui/home/service/home_service.dart';
+import 'package:travel_blog/ui/home/view/home.dart';
 
-abstract class DetailViewModel extends State<Home> {
+abstract class HomeViewModel extends State<Home> {
   bool isLoading = false;
-  List<DetailModel> detailList = [];
-  IDetailService detailService;
+  List<HomeModel> homeList = [];
+  IHomeService homeService;
 
   @override
   void initState() {
     super.initState();
-    detailService = DetailService();
+    homeService = HomeService();
     callItems();
   }
 
@@ -39,6 +39,6 @@ abstract class DetailViewModel extends State<Home> {
   }
 
   Future<void> getDiscountList() async {
-    detailList = await detailService.getDiscountList();
+    homeList = await homeService.getDiscountList();
   }
 }
