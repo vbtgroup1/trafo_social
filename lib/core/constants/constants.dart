@@ -10,14 +10,13 @@ class AppConstants {
 
   static const Color appBarIconColor = Colors.black;
   static const Color appBartitleColor = Colors.black;
-  static const String appBarTitleText = "Detail Page";
 
   //homeBodyPadding
-  static const double homeBodyPadding = 8.0;
+  static const double homeBodyPadding = 15;
 
   //homeCard
   static const double homeCardRadius = 20.0;
-  static const double homeCardVerticalMargin = 8.0;
+  static const double homeCardVerticalMargin = 5.0;
 
   //homeUser
   static const double homeUserContainerVerticalMargin = 4.0;
@@ -43,8 +42,6 @@ class AppConstants {
 
   //detailUserNameAndSharedDate
   static const double detailUserNameAndSharedDatePaddingLeft = 10.0;
-  static const String detailUserName = "Grant Marshall";
-  static const String detailSharedDate = "January 9,2020";
   static final Color detailSharedDateColor = Colors.grey[400];
 
   //detailContentText

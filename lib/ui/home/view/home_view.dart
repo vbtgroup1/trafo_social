@@ -105,16 +105,23 @@ class HomeView extends HomeViewModel {
   Widget homeBody(CardModel card) {
     return Padding(
       padding: EdgeInsets.all(AppConstants.homeBodyPadding),
-      child: Column(
-        children: [
-          homeCard(card.imgUrl),
-          homeUserContainer(
-            card.userPicUrl,
-            card.userName,
-            card.shareDate,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(AppConstants.homeCardRadius),
           ),
-          homeContentText(card.briefContent),
-        ],
+        ),
+        child: Column(
+          children: [
+            homeCard(card.imgUrl),
+            homeUserContainer(
+              card.userPicUrl,
+              card.userName,
+              card.shareDate,
+            ),
+            homeContentText(card.briefContent),
+          ],
+        ),
       ),
     );
   }
@@ -123,13 +130,10 @@ class HomeView extends HomeViewModel {
     return Center(
       child: Card(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(AppConstants.homeCardRadius),
-            topRight: Radius.circular(AppConstants.homeCardRadius),
+          borderRadius: BorderRadius.all(
+            Radius.circular(AppConstants.homeCardRadius),
           ),
         ),
-        margin:
-            EdgeInsets.symmetric(vertical: AppConstants.homeCardVerticalMargin),
         child: Container(
           width: MediaQuery.of(context).size.width * 1,
           height: MediaQuery.of(context).size.width * 0.55,
