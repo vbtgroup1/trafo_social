@@ -58,7 +58,7 @@ class HomeView extends HomeViewModel {
       elevation: 0,
       centerTitle: true,
       leading: buildIconButtonProfile(userPicUrl),
-      title: buildTextMainTitle('Home Page'),
+      title: buildTextMainTitle('Feed'),
       actions: [
         buildIconButtonSearch(),
       ],
@@ -77,11 +77,7 @@ class HomeView extends HomeViewModel {
   Text buildTextMainTitle(String title) {
     return Text(
       title,
-      style: TextStyle(
-        color: Colors.black,
-        fontSize: MediaQuery.of(context).size.width * 0.08,
-        fontWeight: FontWeight.bold,
-      ),
+      style: AppConstants.appTextStyleTitle,
     );
   }
 
@@ -114,11 +110,7 @@ class HomeView extends HomeViewModel {
         child: Column(
           children: [
             homeCard(card.imgUrl),
-            homeUserContainer(
-              card.userPicUrl,
-              card.userName,
-              card.shareDate,
-            ),
+            homeUserContainer(card.userPicUrl, card.userName, card.shareDate),
             homeContentText(card.briefContent),
           ],
         ),
@@ -136,7 +128,7 @@ class HomeView extends HomeViewModel {
         ),
         child: Container(
           width: MediaQuery.of(context).size.width * 1,
-          height: MediaQuery.of(context).size.width * 0.55,
+          height: MediaQuery.of(context).size.width * 0.45,
           child: ClipRRect(
             borderRadius:
                 BorderRadius.all(Radius.circular(AppConstants.homeCardRadius)),
@@ -147,11 +139,10 @@ class HomeView extends HomeViewModel {
     );
   }
 
-  Container homeUserContainer(
+  Widget homeUserContainer(
       String userPicUrl, String userName, String shareDate) {
     return Container(
-      margin: EdgeInsets.symmetric(
-          vertical: AppConstants.homeUserContainerVerticalMargin),
+      width: MediaQuery.of(context).size.width * 0.85,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -166,7 +157,7 @@ class HomeView extends HomeViewModel {
 
   Container homeUserProfileImg(String userPicUrl) {
     return Container(
-      height: MediaQuery.of(context).size.width * 0.15,
+      height: MediaQuery.of(context).size.width * 0.1,
       child: ClipRRect(
         borderRadius:
             BorderRadius.all(Radius.circular(AppConstants.homeUserRadius)),
@@ -199,19 +190,14 @@ class HomeView extends HomeViewModel {
   Text homeUserNameText(String userName) {
     return Text(
       userName,
-      style: TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
-          fontSize: MediaQuery.of(context).size.width * 0.045),
+      style: AppConstants.appTextStyleUserName,
     );
   }
 
   Text homeSharedDateText(String shareDate) {
     return Text(
       shareDate,
-      style: TextStyle(
-          color: AppConstants.homeSharedDateColor,
-          fontSize: MediaQuery.of(context).size.width * 0.035),
+      style: AppConstants.appTextStyleShareDate,
     );
   }
 
