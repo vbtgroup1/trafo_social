@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:travel_blog/ui/profile_edit_page/view/editProfile.dart';
 import 'package:travel_blog/ui/profile_page/viewmodel/profile_viewmodel.dart';
 
 class ProfileView extends ProfileViewModel {
@@ -200,7 +201,10 @@ class ProfileView extends ProfileViewModel {
         IconButton(
           disabledColor: Colors.white,
           icon: Icon(Icons.edit),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => EditProfile()));
+          },
         ),
       ],
     );
