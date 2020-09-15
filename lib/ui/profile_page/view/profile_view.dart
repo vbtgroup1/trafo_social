@@ -200,7 +200,7 @@ class ProfileView extends ProfileViewModel {
         IconButton(
           disabledColor: Colors.white,
           icon: Icon(Icons.edit),
-          onPressed: (){},
+          onPressed: () {},
         ),
       ],
     );
