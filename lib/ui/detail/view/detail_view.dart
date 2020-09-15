@@ -102,7 +102,7 @@ class DetailView extends DetailViewModel {
               topRight: Radius.circular(detailCardRadius),
             ),
             child: Image.network(
-              "https://lh3.googleusercontent.com/proxy/3WB5Vi-1ZX00DpguJEhxYKws78G_RXBFnhPKbNgg_iZ0Rosfz3FIX-qqzD6i65PEql5BFCTiJvzGPdIkTOUqxCdcZ85XqA5ov-wZ8rhmSOT5",
+              "https://cdn2.enuygun.com/media/lib/uploads/image/kamp-yerleri-7536.jpeg",
               fit: BoxFit.fill,
             ),
           ),
