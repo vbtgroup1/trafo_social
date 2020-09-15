@@ -1,20 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:travel_blog/ui/profile_page/viewmodel/profile_viewmodel.dart';
 
 class ProfileView extends ProfileViewModel {
   @override
+  String view = "food";
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
     final String imgUrl =
         'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
     final String travel = 'https://gokovali.com/images/2018/06/06/azmak.jpg';
-    final String foodIcon =
-        'https://cdn4.vectorstock.com/i/1000x1000/85/18/charity-food-icon-in-flat-style-on-white-vector-27938518.jpg';
-    final String travelIcon =
-        'https://image.shutterstock.com/image-vector/suitcase-icon-travel-logo-600w-1373542559.jpg';
     final String travell =
         'https://media-cdn.tripadvisor.com/media/photo-s/09/51/c7/db/the-forest-camp.jpg';
+    List<String> myList = [
+      travell,
+      travel,
+      travell,
+      travel,
+      travell,
+      travel,
+      travell
+    ];
+
     return new Stack(
       children: <Widget>[
         buildContainer(),
@@ -23,28 +31,15 @@ class ProfileView extends ProfileViewModel {
             resizeToAvoidBottomPadding: false,
             appBar: buildAppBar(),
             backgroundColor: Colors.transparent,
-            body: new Container(
+            body: Container(
               child: new Column(
                 children: <Widget>[
                   buildProfileImage(_width, _height, imgUrl),
                   buildSizedBox(_height),
                   buildNameSurnameText('Eric Ferkyd', _width),
-                  Padding(
-                    padding: buildJobTextEdgeInsets(_height, _width),
-                    child: buildJobText('Computer Engineer', _width),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      buildIconButton(foodIcon),
-                      buildIconButton(travelIcon),
-                    ],
-                  ),
-                  Expanded(
-                    child: Container(
-                      child: buildGridView(travell),
-                    ),
-                  ),
+                  buildJobText('Computer Engineer', _width, _height),
+                  buildRowButtons(),
+                  buildPosts(myList),
                 ],
               ),
             ))
@@ -52,19 +47,40 @@ class ProfileView extends ProfileViewModel {
     );
   }
 
-  GridView buildGridView(String postImage) {
+  Expanded buildPosts(List<String> PostList) {
+    return Expanded(
+      child: Container(
+        color: Color(0xffedf4ff),
+        child: buildGridView(PostList, 10),
+      ),
+    );
+  }
+
+  Row buildRowButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        buildFoodIconButton(),
+        buildTravelIconButton(),
+      ],
+    );
+  }
+
+  GridView buildGridView(List<String> postList, int postNumber) {
     return GridView.count(
+      shrinkWrap: true,
+      primary: true,
+      //scrollDirection: Axis.vertical,
       crossAxisCount: 3,
       crossAxisSpacing: 2.0,
       mainAxisSpacing: 2.0,
-      shrinkWrap: true,
       children: List.generate(
-        10,
+        postList.length,
         (index) {
           return Padding(
             padding: const EdgeInsets.all(5.0),
             child: Container(
-              decoration: buildPostImage(postImage),
+              decoration: buildPostImage(postList[index]),
             ),
           );
         },
@@ -85,12 +101,33 @@ class ProfileView extends ProfileViewModel {
     );
   }
 
-  IconButton buildIconButton(String foodIcon) {
+  Color isActiveButtonColor(String viewName) {
+    if (view == viewName) {
+      return const Color(0xff83a4d4);
+    } else {
+      return Colors.black26;
+    }
+  }
+
+  IconButton buildFoodIconButton() {
     return IconButton(
-      icon: Image.network(
-        foodIcon,
-      ),
-      onPressed: () {},
+      icon: Icon(Icons.fastfood, color: isActiveButtonColor('food')),
+      onPressed: () {
+        setState(() {
+          view = 'food';
+        });
+      },
+    );
+  }
+
+  IconButton buildTravelIconButton() {
+    return IconButton(
+      icon: Icon(Icons.card_travel, color: isActiveButtonColor('travel')),
+      onPressed: () {
+        setState(() {
+          view = 'travel';
+        });
+      },
     );
   }
 
@@ -110,15 +147,17 @@ class ProfileView extends ProfileViewModel {
         bottom: _height / 30);
   }
 
-  Text buildJobText(String job, double _width) {
-    return Text(
-      job,
-      style: TextStyle(
-          fontWeight: FontWeight.normal,
-          fontSize: _width / 25,
-          color: Colors.white),
-      textAlign: TextAlign.center,
-    );
+  Padding buildJobText(String job, double _width, double _height) {
+    return Padding(
+        padding: buildJobTextEdgeInsets(_height, _width),
+        child: Text(
+          job,
+          style: GoogleFonts.montserrat(
+            fontSize: _width / 25,
+            fontWeight: FontWeight.bold,
+          ),
+          textAlign: TextAlign.center,
+        ));
   }
 
   SizedBox buildSizedBox(double _height) {
@@ -128,13 +167,11 @@ class ProfileView extends ProfileViewModel {
   }
 
   Text buildNameSurnameText(String nameSurname, double _width) {
-    return Text(
-      nameSurname,
-      style: new TextStyle(
+    return Text(nameSurname,
+        style: GoogleFonts.montserrat(
+          fontSize: _width / 20,
           fontWeight: FontWeight.bold,
-          fontSize: _width / 15,
-          color: Colors.white),
-    );
+        ));
   }
 
   Image buildBackgroundImage(String travel) {
@@ -159,6 +196,13 @@ class ProfileView extends ProfileViewModel {
         icon: const Icon(Icons.arrow_back),
         onPressed: () {},
       ),
+      actions: [
+        IconButton(
+          disabledColor: Colors.white,
+          icon: Icon(Icons.edit),
+          onPressed: (){},
+        ),
+      ],
     );
   }
 }
