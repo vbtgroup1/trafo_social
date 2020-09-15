@@ -1,22 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:travel_blog/ui/home/view/home_travel.dart';
-import 'package:travel_blog/ui/home/viewmodel/home_viewmodel_food.dart';
+import 'package:travel_blog/ui/home/model/card_model.dart';
+import 'package:travel_blog/ui/home/viewmodel/home_viewmodel.dart';
 import 'package:travel_blog/core/constants/constants.dart';
 
-class HomeViewFood extends HomeViewModelFood {
+class HomeView extends HomeViewModel {
   static const storyListLength = 1000; // Dummy
-  int index = 0;
+  CardModel dummyCardTravel = CardModel(
+      "https://cdn.pixabay.com/photo/2018/07/26/07/45/valais-3562988_1280.jpg",
+      "https://cdn.pixabay.com/photo/2016/03/31/19/56/avatar-1295397_960_720.png",
+      "Grant Marshall",
+      "January 9,2020",
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.");
+  CardModel dummyCardFood = CardModel(
+      "https://cdn.pixabay.com/photo/2018/07/26/07/45/valais-3562988_1280.jpg",
+      "https://cdn.pixabay.com/photo/2016/03/31/19/56/avatar-1295397_960_720.png",
+      "Grant Marshall",
+      "January 9,2020",
+      "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...");
+  int _index = 0;
 
   @override
   Widget build(BuildContext context) {
+    CardModel card;
+    switch (_index) {
+      case 0:
+        card = dummyCardFood;
+        break;
+      case 1:
+        card = dummyCardTravel;
+        break;
+    }
     return Scaffold(
-      appBar: buildAppBar(),
-      body: buildListViewStories(),
+      appBar: buildAppBar(card.userPicUrl),
+      body: buildListViewStories(card),
       bottomNavigationBar: BottomNavigationBar(
-          currentIndex: index,
-          onTap: (int index) {
+          currentIndex: _index,
+          onTap: (index) {
             setState(() {
-              this.index = index;
+              _index = index;
             });
           },
           items: [
@@ -31,28 +52,12 @@ class HomeViewFood extends HomeViewModelFood {
     );
   }
 
-  BottomNavigationBarItem buildBottomNavigationBarItem(
-      String text, IconData icon) {
-    return BottomNavigationBarItem(
-      icon: Icon(icon),
-      title: Text(text),
-    );
-  }
-
-  ListView buildListViewStories() {
-    return ListView.builder(
-        itemCount: storyListLength,
-        itemBuilder: (context, index) {
-          return homeBody();
-        });
-  }
-
-  AppBar buildAppBar() {
+  AppBar buildAppBar(String userPicUrl) {
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 0,
       centerTitle: true,
-      leading: buildIconButtonProfile(),
+      leading: buildIconButtonProfile(userPicUrl),
       title: buildTextMainTitle('Home Page'),
       actions: [
         buildIconButtonSearch(),
@@ -60,12 +65,12 @@ class HomeViewFood extends HomeViewModelFood {
     );
   }
 
-  IconButton buildIconButtonSearch() {
+  IconButton buildIconButtonProfile(String userPicUrl) {
     return IconButton(
-      icon: Icon(Icons.search),
+      icon: homeUserProfileImg(userPicUrl),
       iconSize: MediaQuery.of(context).size.width * 0.08,
-      onPressed: () {},
       color: Colors.black,
+      onPressed: () {},
     );
   }
 
@@ -80,29 +85,41 @@ class HomeViewFood extends HomeViewModelFood {
     );
   }
 
-  IconButton buildIconButtonProfile() {
+  IconButton buildIconButtonSearch() {
     return IconButton(
-      icon: homeUserProfileImg(),
+      icon: Icon(Icons.search),
       iconSize: MediaQuery.of(context).size.width * 0.08,
-      color: Colors.black,
       onPressed: () {},
+      color: Colors.black,
     );
   }
 
-  Padding homeBody() {
+  ListView buildListViewStories(CardModel card) {
+    return ListView.builder(
+        itemCount: storyListLength,
+        itemBuilder: (context, index) {
+          return homeBody(card);
+        });
+  }
+
+  Widget homeBody(CardModel card) {
     return Padding(
       padding: EdgeInsets.all(AppConstants.homeBodyPadding),
       child: Column(
         children: [
-          homeCard(),
-          homeUserContainer(),
-          homeContentText(),
+          homeCard(card.imgUrl),
+          homeUserContainer(
+            card.userPicUrl,
+            card.userName,
+            card.shareDate,
+          ),
+          homeContentText(card.briefContent),
         ],
       ),
     );
   }
 
-  Center homeCard() {
+  Center homeCard(String imgUrl) {
     return Center(
       child: Card(
         shape: RoundedRectangleBorder(
@@ -117,29 +134,25 @@ class HomeViewFood extends HomeViewModelFood {
           width: MediaQuery.of(context).size.width * 1,
           height: MediaQuery.of(context).size.width * 0.55,
           child: ClipRRect(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(AppConstants.homeCardRadius),
-              topRight: Radius.circular(AppConstants.homeCardRadius),
-            ),
-            child: Image.network(
-              "https://cdn.pixabay.com/photo/2018/07/26/07/45/valais-3562988_1280.jpg",
-              fit: BoxFit.fill,
-            ),
+            borderRadius:
+                BorderRadius.all(Radius.circular(AppConstants.homeCardRadius)),
+            child: Image.network(imgUrl, fit: BoxFit.fill),
           ),
         ),
       ),
     );
   }
 
-  Container homeUserContainer() {
+  Container homeUserContainer(
+      String userPicUrl, String userName, String shareDate) {
     return Container(
       margin: EdgeInsets.symmetric(
           vertical: AppConstants.homeUserContainerVerticalMargin),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          homeUserProfileImg(),
-          homeUserNameAndSharedDate(),
+          homeUserProfileImg(userPicUrl),
+          homeUserNameAndSharedDate(userName, shareDate),
           Spacer(),
           homeUserIconList()
         ],
@@ -147,21 +160,21 @@ class HomeViewFood extends HomeViewModelFood {
     );
   }
 
-  Container homeUserProfileImg() {
+  Container homeUserProfileImg(String userPicUrl) {
     return Container(
       height: MediaQuery.of(context).size.width * 0.15,
       child: ClipRRect(
         borderRadius:
             BorderRadius.all(Radius.circular(AppConstants.homeUserRadius)),
         child: Image.network(
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS6zes53m4a_2VLTcmTn_bHk8NO5SkuWfcQbg&usqp=CAU",
+          userPicUrl,
           fit: BoxFit.fill,
         ),
       ),
     );
   }
 
-  Padding homeUserNameAndSharedDate() {
+  Padding homeUserNameAndSharedDate(String userName, String shareDate) {
     return Padding(
       padding: EdgeInsets.only(
           left: AppConstants.homeUserNameAndSharedDatePaddingLeft),
@@ -171,17 +184,17 @@ class HomeViewFood extends HomeViewModelFood {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            homeUserNameText(),
-            homeSharedDateText(),
+            homeUserNameText(userName),
+            homeSharedDateText(shareDate),
           ],
         ),
       ),
     );
   }
 
-  Text homeUserNameText() {
+  Text homeUserNameText(String userName) {
     return Text(
-      AppConstants.homeUserName,
+      userName,
       style: TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.bold,
@@ -189,9 +202,9 @@ class HomeViewFood extends HomeViewModelFood {
     );
   }
 
-  Text homeSharedDateText() {
+  Text homeSharedDateText(String shareDate) {
     return Text(
-      AppConstants.homeSharedDate,
+      shareDate,
       style: TextStyle(
           color: AppConstants.homeSharedDateColor,
           fontSize: MediaQuery.of(context).size.width * 0.035),
@@ -201,23 +214,29 @@ class HomeViewFood extends HomeViewModelFood {
   Row homeUserIconList() {
     return Row(
       children: [
-        IconButton(icon: Icon(Icons.location_on), onPressed: null),
-        IconButton(icon: Icon(Icons.favorite), onPressed: null),
-        IconButton(icon: Icon(Icons.bookmark_border), onPressed: null)
+        IconButton(icon: Icon(Icons.location_on), onPressed: () {}),
+        IconButton(icon: Icon(Icons.favorite), onPressed: () {}),
+        IconButton(icon: Icon(Icons.bookmark_border), onPressed: () {})
       ],
     );
   }
 
-  Padding homeContentText() {
+  Padding homeContentText(String content) {
     return Padding(
       padding: EdgeInsets.all(AppConstants.homeContentTextPadding),
       child: Column(
         children: [
-          Text(
-              "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-              textAlign: TextAlign.justify),
+          Text(content, textAlign: TextAlign.justify),
         ],
       ),
+    );
+  }
+
+  BottomNavigationBarItem buildBottomNavigationBarItem(
+      String text, IconData icon) {
+    return BottomNavigationBarItem(
+      icon: Icon(icon),
+      title: Text(text),
     );
   }
 }

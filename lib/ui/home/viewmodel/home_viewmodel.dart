@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:travel_blog/ui/home/model/home_model.dart';
 import 'package:travel_blog/ui/home/service/IHome_service.dart';
 import 'package:travel_blog/ui/home/service/home_service.dart';
-import 'package:travel_blog/ui/home/view/home_travel.dart';
+import 'package:travel_blog/ui/home/view/home.dart';
 
-abstract class HomeViewModelTravel extends State<HomeTravel> {
+abstract class HomeViewModel extends State<Home> {
   bool isLoading = false;
   List<HomeModel> homeList = [];
   IHomeService homeService;

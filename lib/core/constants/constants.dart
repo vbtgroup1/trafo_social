@@ -25,8 +25,6 @@ class AppConstants {
 
   //homeUserNameAndSharedDate
   static const double homeUserNameAndSharedDatePaddingLeft = 10.0;
-  static const String homeUserName = "Grant Marshall";
-  static const String homeSharedDate = "January 9,2020";
   static final Color homeSharedDateColor = Colors.grey[400];
 
   //homeContentText
