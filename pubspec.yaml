@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=2.7.0 <3.0.0'
 
 dependencies:
   flutter:
@@ -28,7 +28,6 @@ dependencies:
   http: ^0.12.0
   mobx: ^1.0.0
   flutter_mobx: ^1.0.0
-  google_fonts: ^1.1.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -44,15 +43,11 @@ dev_dependencies:
 
   mobx_codegen: ^1.1.0+1
 
-dependency_overrides:
-  analyzer: '0.39.14'
-
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -60,12 +55,4 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-   - assets/images/upload.png
-   - assets/images/art.png
-   - assets/images/uploadimage.svg
-   - assets/images/upload1.svg
-   
- 
- 
-
-
+    - assets/images/
