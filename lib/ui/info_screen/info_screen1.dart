@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:travel_blog/ui/home/view/home.dart';
 
 class InfoScreen extends StatefulWidget {
   @override
@@ -89,11 +90,7 @@ class _InfoScreenState extends State<InfoScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Center(
-                              child: SvgPicture.asset(
-                        "assets/images/uploadimage.svg",
-                      ),
-                            ),
+                            Center(),
                             SizedBox(height: 30.0),
                             Text(
                               "Add a Text",
@@ -233,7 +230,7 @@ class _InfoScreenState extends State<InfoScreen> {
               child: GestureDetector(
                 onTap: () {
                   Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => null));
+                      context, MaterialPageRoute(builder: (context) => Home()));
                 },
                 child: Center(
                   child: Padding(

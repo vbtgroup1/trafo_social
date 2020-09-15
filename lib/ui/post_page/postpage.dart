@@ -2,6 +2,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:travel_blog/ui/home/view/home.dart';
 
 class PostPage extends StatefulWidget {
   @override
@@ -32,7 +33,7 @@ class BodyUI extends StatelessWidget {
           b5(),
           b6(),
           b7(),
-          b8(),
+          b8(context),
         ],
       ),
     );
@@ -75,7 +76,7 @@ class BodyUI extends StatelessWidget {
     );
   }
 
-  RaisedButton b8() {
+  RaisedButton b8(context) {
     return RaisedButton(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(40.0),
@@ -83,7 +84,10 @@ class BodyUI extends StatelessWidget {
           color: Color(0xff83a4d4),
         ),
       ),
-      onPressed: () {},
+      onPressed: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Home()));
+      },
       color: Color(0xff83a4d4),
       textColor: Colors.white,
       child: Text(

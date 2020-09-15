@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:travel_blog/ui/detail/view/detail.dart';
 import 'package:travel_blog/ui/home/model/card_model.dart';
 import 'package:travel_blog/ui/home/viewmodel/home_viewmodel.dart';
 import 'package:travel_blog/core/constants/constants.dart';
+import 'package:travel_blog/ui/post_page/postpage.dart';
+import 'package:travel_blog/ui/profile_page/view/profile.dart';
 
 class HomeView extends HomeViewModel {
   static const storyListLength = 1000; // Dummy
@@ -46,7 +49,10 @@ class HomeView extends HomeViewModel {
           ]),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => PostPage()));
+        },
         child: Icon(Icons.add),
       ),
     );
@@ -70,7 +76,10 @@ class HomeView extends HomeViewModel {
       icon: homeUserProfileImg(userPicUrl),
       iconSize: MediaQuery.of(context).size.width * 0.08,
       color: Colors.black,
-      onPressed: () {},
+      onPressed: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Profile()));
+      },
     );
   }
 
@@ -132,7 +141,12 @@ class HomeView extends HomeViewModel {
           child: ClipRRect(
             borderRadius:
                 BorderRadius.all(Radius.circular(AppConstants.homeCardRadius)),
-            child: Image.network(imgUrl, fit: BoxFit.fill),
+            child: GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Detail()));
+                },
+                child: Image.network(imgUrl, fit: BoxFit.fill)),
           ),
         ),
       ),
