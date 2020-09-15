@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:travel_blog/info_screen/info_screen1.dart';
+import 'package:travel_blog/post_page/postpage.dart';
 
 void main() => runApp(MyApp());
 
@@ -7,16 +9,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Material App',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Material App Bar'),
-        ),
-        body: Center(
-          child: Container(
-            child: Text('Hello World'),
-          ),
-        ),
-      ),
+      home: PostPage(),
     );
   }
 }
