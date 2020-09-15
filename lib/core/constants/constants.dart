@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -8,6 +9,7 @@ class AppConstants {
 
   static const String BASE_URL = "https://fb-wash-app.firebaseio.com";
   static const String DISCOUNTLIST_URL = "$BASE_URL/home/discountlist.json";
+
   static const Color THEME_COLOR = Color.fromRGBO(227, 250, 252, 1);
 
   // Text Styles
