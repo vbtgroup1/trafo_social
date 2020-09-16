@@ -6,8 +6,9 @@ import 'IDetail_service.dart';
 
 class DetailService extends IDetailService {
   @override
-  Future<List<DetailModel>> getDiscountList() async {
+  Future<List<DetailModel>> getImgList() async {
     return await httpGet<DetailModel>(
-        AppConstants.DISCOUNTLIST_URL, DetailModel());
+        "https://fb-travel-app.firebaseio.com/product/traveller/0/sharedImg.json",
+        DetailModel());
   }
 }

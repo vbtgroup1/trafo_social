@@ -156,8 +156,11 @@ class HomeView extends HomeViewModel {
                 BorderRadius.all(Radius.circular(AppConstants.homeCardRadius)),
             child: GestureDetector(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Detail()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Detail(
+                              dummyCardFood))); //burada paylaşımın key'i ve paylaşıma ait model gönderilcek.
                 },
                 child: Image.network(imgUrl, fit: BoxFit.fill)),
           ),

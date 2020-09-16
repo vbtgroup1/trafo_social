@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:travel_blog/core/base/model/error_model.dart';
+import 'package:travel_blog/ui/detail/model/detail_model.dart';
 import 'package:travel_blog/ui/detail/viewmodel/detail_viewmodel.dart';
+import 'package:travel_blog/ui/home/model/card_model.dart';
 
 class DetailView extends DetailViewModel {
+  final CardModel homeCardModel;
+  DetailView(this.homeCardModel);
+
 //app Bar
   double get appBarButtonSize => MediaQuery.of(context).size.width * 0.08;
   double get appBarTitleSize => MediaQuery.of(context).size.width * 0.08;
@@ -13,10 +19,11 @@ class DetailView extends DetailViewModel {
   double get detailBodyPadding => 8.0;
 
   //detailCard
-  double get detailCardSizeWidth => MediaQuery.of(context).size.width * 1;
+  double get detailCardSizeWidth => MediaQuery.of(context).size.width * 0.9;
   double get detailCardSizeHeight => MediaQuery.of(context).size.width * 0.55;
   double get detailCardRadius => 20.0;
   double get detailCardVerticalMargin => 8.0;
+  double get detailCardHorizonalMargin => 5.0;
 
   //detailUser
   double get detailUserProfileImgHeight =>
@@ -75,7 +82,7 @@ class DetailView extends DetailViewModel {
       padding: EdgeInsets.all(detailBodyPadding),
       child: Column(
         children: [
-          detailCard(),
+          imgListFutureBuilder(),
           detailUserContainer(),
           detailContentText(),
         ],
@@ -83,7 +90,44 @@ class DetailView extends DetailViewModel {
     );
   }
 
-  Center detailCard() {
+  Container imgListFutureBuilder() {
+    return Container(
+      height: detailCardSizeHeight,
+      child: FutureBuilder<List<DetailModel>>(
+        future: detailService.getImgList(),
+        builder:
+            (BuildContext context, AsyncSnapshot<List<DetailModel>> snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.active:
+            case ConnectionState.waiting:
+              return Center(child: CircularProgressIndicator());
+            case ConnectionState.done:
+              if (snapshot.hasData) {
+                return imgListView(snapshot.data);
+              } else {
+                final error = snapshot.error as ErrorModel;
+                return Center(
+                  child: Text(error.text),
+                );
+              }
+              break;
+            default:
+              return Text("Something went wrong");
+          }
+        },
+      ),
+    );
+  }
+
+  ListView imgListView(List<DetailModel> imgList) {
+    return ListView.builder(
+      itemCount: imgList.length,
+      scrollDirection: Axis.horizontal,
+      itemBuilder: (context, index) => detailCard(imgList[index]),
+    );
+  }
+
+  Center detailCard(DetailModel imgList) {
     return Center(
       child: Card(
         shape: RoundedRectangleBorder(
@@ -92,17 +136,18 @@ class DetailView extends DetailViewModel {
             topRight: Radius.circular(detailCardRadius),
           ),
         ),
-        margin: EdgeInsets.symmetric(vertical: detailCardVerticalMargin),
+        margin: EdgeInsets.symmetric(
+            vertical: detailCardVerticalMargin,
+            horizontal: detailCardHorizonalMargin),
         child: Container(
           width: detailCardSizeWidth,
-          height: detailCardSizeHeight,
           child: ClipRRect(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(detailCardRadius),
               topRight: Radius.circular(detailCardRadius),
             ),
             child: Image.network(
-              "https://cdn2.enuygun.com/media/lib/uploads/image/kamp-yerleri-7536.jpeg",
+              imgList.url,
               fit: BoxFit.fill,
             ),
           ),
