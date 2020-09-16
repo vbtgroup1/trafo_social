@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Splash(),
       debugShowCheckedModeBanner: false,
-      title: 'Material App',
+      title: 'Travel App',
     );
   }
 }
