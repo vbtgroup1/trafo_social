@@ -1,33 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travel_blog/ui/profile_edit_page/view/editProfile.dart';
+import 'package:travel_blog/ui/profile_page/model/sharedImage_model.dart';
 import 'package:travel_blog/ui/profile_page/viewmodel/profile_viewmodel.dart';
 
 class ProfileView extends ProfileViewModel {
-  @override
   String view = "food";
+  List<SharedImg> posts;
+  int _index = 0;
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
     final String imgUrl =
         'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
-    final String travel = 'https://gokovali.com/images/2018/06/06/azmak.jpg';
-    final String travell =
-        'https://media-cdn.tripadvisor.com/media/photo-s/09/51/c7/db/the-forest-camp.jpg';
-    List<String> myList = [
-      travell,
-      travel,
-      travell,
-      travel,
-      travell,
-      travel,
-      travell
-    ];
+    final String travel1 = 'https://gokovali.com/images/2018/06/06/azmak.jpg';
+
+    switch (_index) {
+      case 0:
+        posts = foodList[1].sharedImg;
+        break;
+      case 1:
+        posts = travelList[0].sharedImg;
+        break;
+    }
 
     return new Stack(
       children: <Widget>[
         buildContainer(),
-        buildBackgroundImage(travel),
+        buildBackgroundImage(travel1),
         new Scaffold(
             resizeToAvoidBottomPadding: false,
             appBar: buildAppBar(),
@@ -40,7 +40,7 @@ class ProfileView extends ProfileViewModel {
                   buildNameSurnameText('Eric Ferkyd', _width),
                   buildJobText('Computer Engineer', _width, _height),
                   buildRowButtons(),
-                  buildPosts(myList),
+                  buildPosts(posts),
                 ],
               ),
             ))
@@ -48,11 +48,16 @@ class ProfileView extends ProfileViewModel {
     );
   }
 
-  Expanded buildPosts(List<String> PostList) {
+  Expanded buildPosts(List<SharedImg> postList) {
     return Expanded(
       child: Container(
         color: Color(0xffedf4ff),
-        child: buildGridView(PostList, 10),
+        child: Stack(
+          children: [
+            buildGridView(postList),
+            Center(child: buildPaddingProgress),
+          ],
+        ),
       ),
     );
   }
@@ -67,7 +72,7 @@ class ProfileView extends ProfileViewModel {
     );
   }
 
-  GridView buildGridView(List<String> postList, int postNumber) {
+  GridView buildGridView(List<SharedImg> postList) {
     return GridView.count(
       shrinkWrap: true,
       primary: true,
@@ -81,7 +86,7 @@ class ProfileView extends ProfileViewModel {
           return Padding(
             padding: const EdgeInsets.all(5.0),
             child: Container(
-              decoration: buildPostImage(postList[index]),
+              decoration: buildPostImage(postList[index].url),
             ),
           );
         },
@@ -89,11 +94,11 @@ class ProfileView extends ProfileViewModel {
     );
   }
 
-  BoxDecoration buildPostImage(String PostImage) {
+  BoxDecoration buildPostImage(String postImage) {
     return BoxDecoration(
       color: Colors.black,
       image: DecorationImage(
-        image: NetworkImage(PostImage),
+        image: NetworkImage(postImage),
         fit: BoxFit.cover,
       ),
       borderRadius: BorderRadius.all(
@@ -117,6 +122,9 @@ class ProfileView extends ProfileViewModel {
         setState(() {
           view = 'food';
         });
+        setState(() {
+          _index = 0;
+        });
       },
     );
   }
@@ -127,6 +135,9 @@ class ProfileView extends ProfileViewModel {
       onPressed: () {
         setState(() {
           view = 'travel';
+        });
+        setState(() {
+          _index = 1;
         });
       },
     );
@@ -207,6 +218,18 @@ class ProfileView extends ProfileViewModel {
           },
         ),
       ],
+    );
+  }
+
+  Widget get buildPaddingProgress {
+    return Visibility(
+      visible: isLoading,
+      child: Padding(
+        padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.03),
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Color(0xff83a4d4)),
+        ),
+      ),
     );
   }
 }

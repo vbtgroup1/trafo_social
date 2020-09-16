@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:travel_blog/ui/profile_page/model/food_model.dart';
 import 'package:travel_blog/ui/profile_page/model/profile_model.dart';
+import 'package:travel_blog/ui/profile_page/model/travel_model.dart';
 import 'package:travel_blog/ui/profile_page/service/IProfile_service.dart';
 import 'package:travel_blog/ui/profile_page/service/profile_service.dart';
 import 'package:travel_blog/ui/profile_page/view/profile.dart';
@@ -7,6 +9,8 @@ import 'package:travel_blog/ui/profile_page/view/profile.dart';
 abstract class ProfileViewModel extends State<Profile> {
   bool isLoading = false;
   List<ProfileModel> detailList = [];
+  List<FoodModel> foodList = [];
+  List<TravelModel> travelList = [];
   IProfileService detailService;
 
   @override
@@ -30,6 +34,18 @@ abstract class ProfileViewModel extends State<Profile> {
     changeLoading();
     await getDiscountList();
     changeLoading();
+    checkErrorList();
+  }
+
+  void checkErrorList() {
+    if (foodList.isEmpty || travelList.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) => Dialog(
+          child: Text(".statusCode.toString()"),
+        ),
+      );
+    }
   }
 
   void changeLoading() {
@@ -39,6 +55,7 @@ abstract class ProfileViewModel extends State<Profile> {
   }
 
   Future<void> getDiscountList() async {
-    detailList = await detailService.getDiscountList();
+    foodList = await detailService.getFoodList();
+    travelList = await detailService.getTravelList();
   }
 }
