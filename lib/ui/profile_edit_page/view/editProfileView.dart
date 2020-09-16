@@ -13,6 +13,7 @@ double circleProfileImageRadius;
 double topBarHeight;
 double topBottomPadding;
 double circularRadius;
+double genderIconSize;
 
 class EditProfileView extends EditProfileViewModel {
   @override
@@ -23,23 +24,47 @@ class EditProfileView extends EditProfileViewModel {
     topBarHeight = deviceHeight * 10 / 100;
     topBottomPadding = deviceHeight * 4 / 100;
     circularRadius = deviceWidth * 20 / 100;
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          isEditingData
-              ? editingTopBar(topBarHeight, savedProfileState)
-              : noneditingTopBar(topBarHeight, context),
-          SizedBox(height: topBottomPadding),
-          profileImage(getImage, pickedImage, circleProfileImageRadius,
-              isImagePicking, isEditingData),
-          profileInfoList(
-              textEditingController, textFieldsDefaultValues, isEditingData),
-          dateTimePicker(
-              textFieldsDefaultValues[3], isEditingData, context, getDateTime),
-          genderPicker(saveGender),
-          buttonIsVisible ? editButton(editProfileState) : SizedBox(),
-        ],
+    genderIconSize = deviceWidth * 30 / 100;
+    return SafeArea(
+      child: Container(
+        color: Colors.white,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              isEditingData
+                  ? editingTopBar(topBarHeight, savedProfileState)
+                  : noneditingTopBar(topBarHeight, context),
+              SizedBox(height: topBottomPadding),
+              profileImage(getImage, pickedImage, circleProfileImageRadius,
+                  isImagePicking, isEditingData),
+              profileInfoList(textEditingController, textFieldsDefaultValues,
+                  isEditingData),
+              dateTimePicker(textFieldsDefaultValues[3], isEditingData, context,
+                  getDateTime),
+              genderPicker(saveGender, isEditingData, selectedGender),
+              buttonIsVisible ? editButton(editProfileState) : SizedBox(),
+              // GestureDetector(
+              //   onTap: () async {
+              //     LatLng latLng = await Navigator.push(
+              //         context,
+              //         MaterialPageRoute(
+              //             builder: (context) => LoadingMapCircular(false)));
+              //     if (latLng != null) {
+              //       //latLng burada geliyor
+              //       print(latLng.latitude.toString());
+              //       print(latLng.longitude.toString());
+              //     }
+              //   },
+              //   child: Container(
+              //     color: Colors.black,
+              //     width: 200,
+              //     height: 100,
+              //   ),
+              // ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -151,27 +176,24 @@ Widget textFields(
   );
 }
 
-Widget genderPicker(Function save) {
-  return Padding(
-    padding: const EdgeInsets.all(10.0),
+Widget genderPicker(Function save, bool isEditingData, Gender selectedGender) {
+  return Container(
+    width: genderIconSize * 2,
     child: GenderPickerWithImage(
-      showOtherGender: false,
-      verticalAlignedText: false,
-      femaleImage: AssetImage('assets/images/female.png'),
-      maleImage: AssetImage('assets/images/male.png'),
-      selectedGenderTextStyle:
-          TextStyle(color: Color(0xFF8b32a8), fontWeight: FontWeight.bold),
-      unSelectedGenderTextStyle:
-          TextStyle(color: Colors.grey, fontWeight: FontWeight.normal),
-      onChanged: (Gender gender) {
-        save(gender);
-      },
-      equallyAligned: true,
-      animationDuration: Duration(milliseconds: 300),
-      isCircular: true,
-      opacityOfGradient: 0.4,
-      size: 50,
-    ),
+        showOtherGender: false,
+        verticalAlignedText: false,
+        femaleImage: AssetImage('assets/images/female.png'),
+        maleImage: AssetImage('assets/images/male.png'),
+        maleText: '',
+        femaleText: '',
+        animationDuration: Duration(milliseconds: 300),
+        isCircular: true,
+        opacityOfGradient: isEditingData ? 0.4 : 0,
+        size: genderIconSize,
+        selectedGender: selectedGender,
+        onChanged: (Gender gender) {
+          save(gender);
+        }),
   );
 }
 
