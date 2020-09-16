@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travel_blog/ui/auth/service/auth_service.dart';
 import 'package:travel_blog/ui/detail/view/detail.dart';
 import 'package:travel_blog/ui/home/model/card_model.dart';
 import 'package:travel_blog/ui/home/viewmodel/home_viewmodel.dart';
@@ -8,6 +9,7 @@ import 'package:travel_blog/ui/profile_page/view/profile.dart';
 
 class HomeView extends HomeViewModel {
   static const storyListLength = 1000; // Dummy
+  final AuthService _auth = AuthService();
   CardModel dummyCardTravel = CardModel(
       "https://cdn.pixabay.com/photo/2018/07/26/07/45/valais-3562988_1280.jpg",
       "https://cdn.pixabay.com/photo/2016/03/31/19/56/avatar-1295397_960_720.png",
@@ -67,14 +69,25 @@ class HomeView extends HomeViewModel {
       title: buildTextMainTitle('Feed'),
       actions: [
         buildIconButtonSearch(),
+        buildFlatButtonLogOut(),
       ],
     );
+  }
+
+  FlatButton buildFlatButtonLogOut() {
+    return FlatButton.icon(
+        onPressed: () async {
+          await _auth.signOut();
+        },
+        icon: Icon(Icons.exit_to_app),
+        label: Text(
+          'Log out',
+        ));
   }
 
   IconButton buildIconButtonProfile(String userPicUrl) {
     return IconButton(
       icon: homeUserProfileImg(userPicUrl),
-      iconSize: MediaQuery.of(context).size.width * 0.08,
       color: Colors.black,
       onPressed: () {
         Navigator.push(
@@ -155,7 +168,7 @@ class HomeView extends HomeViewModel {
 
   Widget homeUserContainer(
       String userPicUrl, String userName, String shareDate) {
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width * 0.85,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -172,6 +185,7 @@ class HomeView extends HomeViewModel {
   Container homeUserProfileImg(String userPicUrl) {
     return Container(
       height: MediaQuery.of(context).size.width * 0.1,
+      width: MediaQuery.of(context).size.width * 0.1,
       child: ClipRRect(
         borderRadius:
             BorderRadius.all(Radius.circular(AppConstants.homeUserRadius)),

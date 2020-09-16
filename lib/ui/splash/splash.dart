@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:travel_blog/ui/home/view/home.dart';
 import 'package:travel_blog/ui/splash/showup.dart';
+import 'package:travel_blog/ui/wrapper.dart';
 
 void main() => runApp(Splash());
 
@@ -23,7 +24,8 @@ class _SplashState extends State<Splash> {
   void initState() {
     super.initState();
     Future.delayed(Duration(seconds: 5), () {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Wrapper()));
     });
   }
 
