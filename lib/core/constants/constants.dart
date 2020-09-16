@@ -39,7 +39,7 @@ class AppConstants {
   //appBar
   static const Color appBarIconColor = Colors.black;
   static const Color appBartitleColor = Colors.black;
-  static const double APPBAR_ICONSIZE = 20;
+  static const double APPBAR_ICONSIZE = 30;
 
   //homeBodyPadding
   static const double homeBodyPadding = 10.0;
