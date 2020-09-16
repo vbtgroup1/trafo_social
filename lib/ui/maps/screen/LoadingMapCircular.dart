@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:travel_blog/ui/maps/MapScreen.dart';
+import 'package:travel_blog/ui/maps/screen/MapScreen.dart';
 
-import 'locationServices.dart';
+import '../locationServices.dart';
 
 class LoadingMapCircular extends StatefulWidget {
   @override
@@ -20,11 +20,20 @@ class _LoadingMapCircularState extends State<LoadingMapCircular> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (widget.haveLocation) {
-        await getLocation().then((value) => Navigator.pushReplacement(context,
+        LatLng latLng = await getLocation().then((value) => Navigator.push(
+            context,
             MaterialPageRoute(builder: (context) => MapScreen(widget.latLng))));
+        if (latLng != null) {
+          Navigator.pop(context, latLng);
+        }
       } else {
-        await getLocation().then((value) => Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => MapScreen(value))));
+        LatLng latLng = await getLocation().then((value) =>
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MapScreen(value))));
+        if (latLng != null) {
+          Navigator.pop(context, latLng);
+        }
       }
     });
   }
