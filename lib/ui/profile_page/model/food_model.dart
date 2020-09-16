@@ -1,4 +1,5 @@
 import 'package:travel_blog/core/base/model/base_model.dart';
+
 import 'sharedImage_model.dart';
 
 class FoodModel extends BaseModel<FoodModel> {
