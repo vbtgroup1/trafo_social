@@ -47,6 +47,10 @@ dependencies:
   geocoder: ^0.2.1
   fluttertoast: ^4.0.0
 
+  flutter_auth_buttons: ^0.10.0
+  eva_icons_flutter: ^2.0.1
+  flutter_signin_button: ^1.1.0
+
 
 dev_dependencies:
   flutter_test:
