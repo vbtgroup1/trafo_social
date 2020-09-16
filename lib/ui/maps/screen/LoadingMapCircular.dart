@@ -27,10 +27,9 @@ class _LoadingMapCircularState extends State<LoadingMapCircular> {
           Navigator.pop(context, latLng);
         }
       } else {
-        LatLng latLng = await getLocation().then((value) =>
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MapScreen(value))));
+        LatLng latLng = await getLocation().then((value) => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => MapScreen(value))));
         if (latLng != null) {
           Navigator.pop(context, latLng);
         }

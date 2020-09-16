@@ -119,7 +119,7 @@ class MapScreenState extends State<MapScreen> {
               GoogleMap(
                 mapType: _mapType,
                 initialCameraPosition:
-                CameraPosition(target: currentPosition, zoom: 18),
+                    CameraPosition(target: currentPosition, zoom: 18),
                 zoomGesturesEnabled: true,
                 myLocationEnabled: true,
                 myLocationButtonEnabled: false,
