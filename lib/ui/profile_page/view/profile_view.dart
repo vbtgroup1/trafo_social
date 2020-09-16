@@ -1,33 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travel_blog/ui/profile_edit_page/view/editProfile.dart';
+import 'package:travel_blog/ui/profile_page/model/sharedImage_model.dart';
 import 'package:travel_blog/ui/profile_page/viewmodel/profile_viewmodel.dart';
 
 class ProfileView extends ProfileViewModel {
-  @override
   String view = "food";
+  List<SharedImg> posts;
+  int _index = 0;
+  int userID = 0;
+  String defaultProfileImg;
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
-    final String imgUrl =
+    defaultProfileImg =
         'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
-    final String travel = 'https://gokovali.com/images/2018/06/06/azmak.jpg';
-    final String travell =
-        'https://media-cdn.tripadvisor.com/media/photo-s/09/51/c7/db/the-forest-camp.jpg';
-    List<String> myList = [
-      travell,
-      travel,
-      travell,
-      travel,
-      travell,
-      travel,
-      travell
-    ];
+    final String travel1 =
+        'https://images.unsplash.com/photo-1505578066158-8015e4136f59?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80';
+
+    switch (_index) {
+      case 0:
+        posts = foodList[0].sharedImg;
+        break;
+      case 1:
+        posts = travelList[0].sharedImg;
+        break;
+    }
 
     return new Stack(
       children: <Widget>[
         buildContainer(),
-        buildBackgroundImage(travel),
+        buildBackgroundImage(travel1, _height),
         new Scaffold(
             resizeToAvoidBottomPadding: false,
             appBar: buildAppBar(),
@@ -35,12 +38,13 @@ class ProfileView extends ProfileViewModel {
             body: Container(
               child: new Column(
                 children: <Widget>[
-                  buildProfileImage(_width, _height, imgUrl),
+                  buildProfileImage(
+                      _width, _height, userList[userID].userProfileImg),
                   buildSizedBox(_height),
-                  buildNameSurnameText('Eric Ferkyd', _width),
-                  buildJobText('Computer Engineer', _width, _height),
+                  buildNameSurnameText(userList[userID].userName, _width),
+                  buildJobText(userList[userID].userJob, _width, _height),
                   buildRowButtons(),
-                  buildPosts(myList),
+                  buildPosts(posts, _height),
                 ],
               ),
             ))
@@ -48,11 +52,16 @@ class ProfileView extends ProfileViewModel {
     );
   }
 
-  Expanded buildPosts(List<String> PostList) {
+  Expanded buildPosts(List<SharedImg> postList, double _height) {
     return Expanded(
       child: Container(
         color: Color(0xffedf4ff),
-        child: buildGridView(PostList, 10),
+        child: Stack(
+          children: [
+            buildGridView(postList),
+            Center(child: buildPaddingProgress),
+          ],
+        ),
       ),
     );
   }
@@ -67,7 +76,7 @@ class ProfileView extends ProfileViewModel {
     );
   }
 
-  GridView buildGridView(List<String> postList, int postNumber) {
+  GridView buildGridView(List<SharedImg> postList) {
     return GridView.count(
       shrinkWrap: true,
       primary: true,
@@ -79,9 +88,9 @@ class ProfileView extends ProfileViewModel {
         postList.length,
         (index) {
           return Padding(
-            padding: const EdgeInsets.all(5.0),
+            padding: const EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
             child: Container(
-              decoration: buildPostImage(postList[index]),
+              decoration: buildPostImage(postList[index].url),
             ),
           );
         },
@@ -89,11 +98,11 @@ class ProfileView extends ProfileViewModel {
     );
   }
 
-  BoxDecoration buildPostImage(String PostImage) {
+  BoxDecoration buildPostImage(String postImage) {
     return BoxDecoration(
       color: Colors.black,
       image: DecorationImage(
-        image: NetworkImage(PostImage),
+        image: NetworkImage(postImage),
         fit: BoxFit.cover,
       ),
       borderRadius: BorderRadius.all(
@@ -117,6 +126,9 @@ class ProfileView extends ProfileViewModel {
         setState(() {
           view = 'food';
         });
+        setState(() {
+          _index = 0;
+        });
       },
     );
   }
@@ -128,12 +140,17 @@ class ProfileView extends ProfileViewModel {
         setState(() {
           view = 'travel';
         });
+        setState(() {
+          _index = 1;
+        });
       },
     );
   }
 
   CircleAvatar buildProfileImage(
       double _width, double _height, String profileImage) {
+    if (profileImage == null || profileImage.isEmpty == true)
+      profileImage = defaultProfileImg;
     return CircleAvatar(
       radius: _width < _height ? _width / 4 : _height / 4,
       backgroundImage: NetworkImage(profileImage),
@@ -149,6 +166,7 @@ class ProfileView extends ProfileViewModel {
   }
 
   Padding buildJobText(String job, double _width, double _height) {
+    if (job == null) job = ' ';
     return Padding(
         padding: buildJobTextEdgeInsets(_height, _width),
         child: Text(
@@ -175,10 +193,11 @@ class ProfileView extends ProfileViewModel {
         ));
   }
 
-  Image buildBackgroundImage(String travel) {
+  Image buildBackgroundImage(String travel, double _height) {
     return new Image.network(
       travel,
-      fit: BoxFit.cover,
+      height: _height * 0.51,
+      fit: BoxFit.fill,
     );
   }
 
@@ -207,6 +226,18 @@ class ProfileView extends ProfileViewModel {
           },
         ),
       ],
+    );
+  }
+
+  Widget get buildPaddingProgress {
+    return Visibility(
+      visible: isLoading,
+      child: Padding(
+        padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.03),
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Color(0xff83a4d4)),
+        ),
+      ),
     );
   }
 }

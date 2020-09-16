@@ -13,7 +13,7 @@ abstract class EditProfileViewModel extends State<EditProfile> {
   List<TextEditingController> textEditingController;
   List<String> textFieldsDefaultValues;
   String dateTime;
-  Gender selectedGender;
+  Gender selectedGender = Gender.Male;
 
   File pickedImage;
   final picker = ImagePicker();
@@ -81,7 +81,7 @@ abstract class EditProfileViewModel extends State<EditProfile> {
         maxTime: DateTime(2019, 9, 15), onConfirm: (date) {
       setState(() {
         dateTime = '${date.year}/${date.month}/${date.day}';
-        textFieldsDefaultValues[4] = dateTime;
+        textFieldsDefaultValues[3] = dateTime;
       });
     }, currentTime: DateTime.now(), locale: LocaleType.en);
   }
