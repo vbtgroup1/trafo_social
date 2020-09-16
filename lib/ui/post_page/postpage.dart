@@ -2,6 +2,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:travel_blog/core/constants/constants.dart';
 import 'package:travel_blog/ui/home/view/home.dart';
 
 class PostPage extends StatefulWidget {
@@ -15,7 +16,36 @@ class _PostPageState extends State<PostPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: buildAppBarCreatePost(context),
       body: BodyUI(),
+    );
+  }
+
+  AppBar buildAppBarCreatePost(BuildContext context) {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      centerTitle: true,
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back),
+        iconSize: AppConstants.APPBAR_ICONSIZE,
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Home()));
+        },
+        color: AppConstants.appBarIconColor,
+      ),
+      title: Text(
+        'Create a post',
+        style: AppConstants.appTextStyleTitle,
+      ),
+      actions: [
+        IconButton(
+          icon: Icon(Icons.save),
+          onPressed: () {},
+          color: AppConstants.appBarIconColor,
+        )
+      ],
     );
   }
 }
@@ -26,7 +56,6 @@ class BodyUI extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          b1(),
           b2(),
           b3(),
           b4(),
@@ -251,33 +280,6 @@ class BodyUI extends StatelessWidget {
             style: GoogleFonts.montserrat(
                 color: Colors.black,
                 fontSize: 20.0,
-                fontWeight: FontWeight.w300),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Container b1() {
-    return Container(
-      margin: EdgeInsets.all(20.0),
-      padding: EdgeInsets.only(top: 40.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Icon(Icons.arrow_back),
-          Text(
-            "Create a Post",
-            style: GoogleFonts.montserrat(
-                color: Colors.black,
-                fontSize: 25.0,
-                fontWeight: FontWeight.w400),
-          ),
-          Text(
-            "Save Drafts",
-            style: GoogleFonts.montserrat(
-                color: Colors.black,
-                fontSize: 15.0,
                 fontWeight: FontWeight.w300),
           ),
         ],
