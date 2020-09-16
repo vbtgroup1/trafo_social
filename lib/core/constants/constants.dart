@@ -6,6 +6,9 @@ class AppConstants {
   static AppConstants get instance => _instance;
   AppConstants._init();
 
+  static const String URL = "https://fb-wash-app.firebaseio.com";
+  static const String DISCOUNTLIST_URL = "$URL/home/discountlist.json";
+
   ////
   static const String BASE_URL = "https://fb-travel-app.firebaseio.com";
   static const String FOOD_URL = "$BASE_URL/product/food.json";

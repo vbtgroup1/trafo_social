@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:travel_blog/ui/profile_page/model/food_model.dart';
 import 'package:travel_blog/ui/profile_page/model/profile_model.dart';
 import 'package:travel_blog/ui/profile_page/model/travel_model.dart';
+import 'package:travel_blog/ui/profile_page/model/user_model.dart';
 import 'package:travel_blog/ui/profile_page/service/IProfile_service.dart';
 import 'package:travel_blog/ui/profile_page/service/profile_service.dart';
 import 'package:travel_blog/ui/profile_page/view/profile.dart';
 
 abstract class ProfileViewModel extends State<Profile> {
   bool isLoading = false;
-  List<ProfileModel> detailList = [];
+  final List<ProfileModel> detailList = [];
   List<FoodModel> foodList = [];
   List<TravelModel> travelList = [];
+  List<UserModel> userList = [];
   IProfileService detailService;
 
   @override
@@ -32,13 +34,13 @@ abstract class ProfileViewModel extends State<Profile> {
 
   Future<void> callItems() async {
     changeLoading();
-    await getDiscountList();
+    await getLists();
     changeLoading();
     checkErrorList();
   }
 
   void checkErrorList() {
-    if (foodList.isEmpty || travelList.isEmpty) {
+    if (foodList.isEmpty) {
       showDialog(
         context: context,
         builder: (context) => Dialog(
@@ -54,8 +56,9 @@ abstract class ProfileViewModel extends State<Profile> {
     });
   }
 
-  Future<void> getDiscountList() async {
+  Future<void> getLists() async {
     foodList = await detailService.getFoodList();
     travelList = await detailService.getTravelList();
+    userList = await detailService.getUserList();
   }
 }

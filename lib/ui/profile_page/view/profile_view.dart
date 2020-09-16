@@ -8,16 +8,19 @@ class ProfileView extends ProfileViewModel {
   String view = "food";
   List<SharedImg> posts;
   int _index = 0;
+  int userID = 0;
+  String defaultProfileImg;
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
-    final String imgUrl =
+    defaultProfileImg =
         'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
-    final String travel1 = 'https://gokovali.com/images/2018/06/06/azmak.jpg';
+    final String travel1 =
+        'https://images.unsplash.com/photo-1505578066158-8015e4136f59?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80';
 
     switch (_index) {
       case 0:
-        posts = foodList[1].sharedImg;
+        posts = foodList[0].sharedImg;
         break;
       case 1:
         posts = travelList[0].sharedImg;
@@ -27,7 +30,7 @@ class ProfileView extends ProfileViewModel {
     return new Stack(
       children: <Widget>[
         buildContainer(),
-        buildBackgroundImage(travel1),
+        buildBackgroundImage(travel1, _height),
         new Scaffold(
             resizeToAvoidBottomPadding: false,
             appBar: buildAppBar(),
@@ -35,12 +38,13 @@ class ProfileView extends ProfileViewModel {
             body: Container(
               child: new Column(
                 children: <Widget>[
-                  buildProfileImage(_width, _height, imgUrl),
+                  buildProfileImage(
+                      _width, _height, userList[userID].userProfileImg),
                   buildSizedBox(_height),
-                  buildNameSurnameText('Eric Ferkyd', _width),
-                  buildJobText('Computer Engineer', _width, _height),
+                  buildNameSurnameText(userList[userID].userName, _width),
+                  buildJobText(userList[userID].userJob, _width, _height),
                   buildRowButtons(),
-                  buildPosts(posts),
+                  buildPosts(posts, _height),
                 ],
               ),
             ))
@@ -48,7 +52,7 @@ class ProfileView extends ProfileViewModel {
     );
   }
 
-  Expanded buildPosts(List<SharedImg> postList) {
+  Expanded buildPosts(List<SharedImg> postList, double _height) {
     return Expanded(
       child: Container(
         color: Color(0xffedf4ff),
@@ -84,7 +88,7 @@ class ProfileView extends ProfileViewModel {
         postList.length,
         (index) {
           return Padding(
-            padding: const EdgeInsets.all(5.0),
+            padding: const EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
             child: Container(
               decoration: buildPostImage(postList[index].url),
             ),
@@ -145,6 +149,8 @@ class ProfileView extends ProfileViewModel {
 
   CircleAvatar buildProfileImage(
       double _width, double _height, String profileImage) {
+    if (profileImage == null || profileImage.isEmpty == true)
+      profileImage = defaultProfileImg;
     return CircleAvatar(
       radius: _width < _height ? _width / 4 : _height / 4,
       backgroundImage: NetworkImage(profileImage),
@@ -160,6 +166,7 @@ class ProfileView extends ProfileViewModel {
   }
 
   Padding buildJobText(String job, double _width, double _height) {
+    if (job == null) job = ' ';
     return Padding(
         padding: buildJobTextEdgeInsets(_height, _width),
         child: Text(
@@ -186,10 +193,11 @@ class ProfileView extends ProfileViewModel {
         ));
   }
 
-  Image buildBackgroundImage(String travel) {
+  Image buildBackgroundImage(String travel, double _height) {
     return new Image.network(
       travel,
-      fit: BoxFit.cover,
+      height: _height * 0.51,
+      fit: BoxFit.fill,
     );
   }
 
