@@ -1,5 +1,4 @@
 import 'package:travel_blog/core/base/service/base_service.dart';
-import 'package:travel_blog/core/constants/constants.dart';
 import 'package:travel_blog/ui/detail/model/detail_model.dart';
 
 import 'IDetail_service.dart';

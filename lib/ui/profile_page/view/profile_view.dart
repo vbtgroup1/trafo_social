@@ -10,6 +10,7 @@ class ProfileView extends ProfileViewModel {
   int _index = 0;
   int userID = 0;
   String defaultProfileImg;
+
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
