@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:gender_picker/source/enums.dart';
 import 'package:gender_picker/source/gender_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:travel_blog/ui/maps/LoadingMapCircular.dart';
 import 'package:travel_blog/ui/profile_edit_page/viewModel/editProfileViewModel.dart';
 
 double deviceWidth;
@@ -44,6 +45,19 @@ class EditProfileView extends EditProfileViewModel {
                   getDateTime),
               genderPicker(saveGender, isEditingData, selectedGender),
               buttonIsVisible ? editButton(editProfileState) : SizedBox(),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => LoadingMapCircular(false)));
+                },
+                child: Container(
+                  color: Colors.black,
+                  width: 200,
+                  height: 100,
+                ),
+              ),
             ],
           ),
         ),
