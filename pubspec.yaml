@@ -50,7 +50,6 @@ dependencies:
   eva_icons_flutter: ^2.0.1
   flutter_signin_button: ^1.1.0
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter

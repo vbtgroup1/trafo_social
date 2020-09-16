@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:travel_blog/ui/profile_page/model/food_model.dart';
 import 'package:travel_blog/ui/profile_page/model/profile_model.dart';
+import 'package:travel_blog/ui/profile_page/model/sharedImage_model.dart';
 import 'package:travel_blog/ui/profile_page/model/travel_model.dart';
 import 'package:travel_blog/ui/profile_page/model/user_model.dart';
 import 'package:travel_blog/ui/profile_page/service/IProfile_service.dart';
@@ -14,6 +15,9 @@ abstract class ProfileViewModel extends State<Profile> {
   List<TravelModel> travelList = [];
   List<UserModel> userList = [];
   IProfileService detailService;
+
+  List<SharedImg> posts = [];
+  int index = 0;
 
   @override
   void initState() {
@@ -60,5 +64,6 @@ abstract class ProfileViewModel extends State<Profile> {
     foodList = await detailService.getFoodList();
     travelList = await detailService.getTravelList();
     userList = await detailService.getUserList();
+    posts = index == 0 ? foodList.first.sharedImg : travelList.first.sharedImg;
   }
 }
