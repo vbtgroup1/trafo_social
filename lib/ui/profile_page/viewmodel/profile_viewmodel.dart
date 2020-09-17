@@ -11,14 +11,16 @@ abstract class ProfileViewModel extends State<Profile> {
   final List<ProfileModel> detailList = [];
   List<ProductModel> foodList = [];
   List<ProductModel> travelList = [];
-  List<UserModel> userList = [];
+  //List<UserModel> userList = [];
   List<ProductModel> tempFoodList = [];
   List<ProductModel> tempTravelList = [];
   IProfileService detailService;
   List<ProductModel> posts = [];
   int index = 0;
   bool isCompleted = false;
-  int userID = 1;
+  UserModel user;
+  String userID =
+      "P8drHGRXyoVO5eiJGQyhPOlqaB73"; //FirebaseAuth.instance.currentUser.uid;
 
   @override
   void initState() {
@@ -64,15 +66,15 @@ abstract class ProfileViewModel extends State<Profile> {
   Future<void> getLists() async {
     foodList = await detailService.getFoodList();
     travelList = await detailService.getTravelList();
-    userList = await detailService.getUserList();
+    await detailService.postUserInfo(user, userID);
 
     for (int i = 0; i < foodList.length; ++i) {
-      if (foodList[i].sharedUserId == userID.toString()) {
+      if (foodList[i].sharedUserId == userID) {
         tempFoodList.add(foodList[i]);
       }
     }
     for (int i = 0; i < travelList.length; ++i) {
-      if (travelList[i].sharedUserId == userID.toString()) {
+      if (travelList[i].sharedUserId == userID) {
         tempTravelList.add(travelList[i]);
       }
     }
