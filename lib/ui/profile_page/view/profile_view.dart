@@ -30,8 +30,8 @@ class ProfileView extends ProfileViewModel {
                       children: <Widget>[
                         buildProfileImage(),
                         buildSizedBox(_height),
-                        buildNameSurnameText(userList[userID].userName, _width),
-                        buildJobText(userList[userID].userJob, _width, _height),
+                        buildNameSurnameText(myUser.userName, _width),
+                        buildJobText(myUser.userJob, _width, _height),
                         buildRowButtons(),
                         buildPosts(),
                       ],
@@ -146,8 +146,8 @@ class ProfileView extends ProfileViewModel {
   }
 
   Widget buildProfileImage() {
-    if (userList.isNotEmpty) {
-      final profileImage = userList[userID].userProfileImg;
+    if (myUser != null) {
+      final profileImage = myUser.userProfileImg;
       return CircleAvatar(
         radius: _width < _height ? _width / 4 : _height / 4,
         backgroundImage: NetworkImage(profileImage),
@@ -215,10 +215,8 @@ class ProfileView extends ProfileViewModel {
           disabledColor: Colors.white,
           icon: Icon(Icons.edit),
           onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => EditProfile(userList[0])));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => EditProfile(myUser)));
           },
         ),
       ],

@@ -20,8 +20,8 @@ class ProfileService extends IProfileService {
   }
 
   @override
-  Future<List<UserModel>> getUserList() async {
-    return await httpGet<UserModel>(
-        "https://fb-travel-app.firebaseio.com/user.json", UserModel());
+  Future<UserModel> getUserModel(String uid) async {
+    return await httpGet(
+        "https://fb-travel-app.firebaseio.com/userID/$uid.json", UserModel());
   }
 }

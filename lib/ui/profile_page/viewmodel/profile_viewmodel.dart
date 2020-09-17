@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_blog/ui/home/model/product_model.dart';
 import 'package:travel_blog/ui/profile_page/model/profile_model.dart';
@@ -11,7 +12,6 @@ abstract class ProfileViewModel extends State<Profile> {
   final List<ProfileModel> detailList = [];
   List<ProductModel> foodList = [];
   List<ProductModel> travelList = [];
-  List<UserModel> userList = [];
   List<ProductModel> tempFoodList = [];
   List<ProductModel> tempTravelList = [];
   IProfileService detailService;
@@ -19,6 +19,8 @@ abstract class ProfileViewModel extends State<Profile> {
   int index = 0;
   bool isCompleted = false;
   int userID = 1;
+
+  UserModel myUser;
 
   @override
   void initState() {
@@ -64,7 +66,9 @@ abstract class ProfileViewModel extends State<Profile> {
   Future<void> getLists() async {
     foodList = await detailService.getFoodList();
     travelList = await detailService.getTravelList();
-    userList = await detailService.getUserList();
+
+    String uid = FirebaseAuth.instance.currentUser.uid;
+    myUser = await detailService.getUserModel(uid);
 
     for (int i = 0; i < foodList.length; ++i) {
       if (foodList[i].sharedUserId == userID.toString()) {
