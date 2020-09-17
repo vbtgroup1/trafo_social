@@ -1,8 +1,7 @@
 import 'package:travel_blog/core/base/model/base_model.dart';
+import 'package:travel_blog/ui/profile_page/model/sharedImage_model.dart';
 
-import 'sharedImage_model.dart';
-
-class FoodModel extends BaseModel<FoodModel> {
+class ProductModel extends BaseModel<ProductModel> {
   String sharedDate;
   List<SharedImg> sharedImg;
   String sharedLat;
@@ -12,7 +11,7 @@ class FoodModel extends BaseModel<FoodModel> {
   String sharedUserName;
   String sharedUserProfileImg;
 
-  FoodModel(
+  ProductModel(
       {this.sharedDate,
       this.sharedImg,
       this.sharedLat,
@@ -22,7 +21,7 @@ class FoodModel extends BaseModel<FoodModel> {
       this.sharedUserName,
       this.sharedUserProfileImg});
 
-  FoodModel.fromJson(Map<String, dynamic> json) {
+  ProductModel.fromJson(Map<String, dynamic> json) {
     sharedDate = json['sharedDate'];
     if (json['sharedImg'] != null) {
       sharedImg = new List<SharedImg>();
@@ -54,7 +53,7 @@ class FoodModel extends BaseModel<FoodModel> {
   }
 
   @override
-  FoodModel fromJson(Map<String, Object> json) {
-    return FoodModel.fromJson(json);
+  ProductModel fromJson(Map<String, Object> json) {
+    return ProductModel.fromJson(json);
   }
 }

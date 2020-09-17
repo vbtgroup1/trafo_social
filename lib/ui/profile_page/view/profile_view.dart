@@ -1,66 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:travel_blog/ui/detail/view/detail.dart';
 import 'package:travel_blog/ui/profile_edit_page/view/editProfile.dart';
-import 'package:travel_blog/ui/profile_page/model/sharedImage_model.dart';
+import 'package:travel_blog/ui/profile_page/model/product_model.dart';
 import 'package:travel_blog/ui/profile_page/viewmodel/profile_viewmodel.dart';
 
 class ProfileView extends ProfileViewModel {
   String view = "food";
-  List<SharedImg> posts;
-  int _index = 0;
-  int userID = 0;
-  String defaultProfileImg;
+  String defaultProfileImg =
+      'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
+  String backgroundImage =
+      'https://images.unsplash.com/photo-1505578066158-8015e4136f59?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80';
+  double get _width => MediaQuery.of(context).size.width;
+  double get _height => MediaQuery.of(context).size.height;
 
   Widget build(BuildContext context) {
-    final _width = MediaQuery.of(context).size.width;
-    final _height = MediaQuery.of(context).size.height;
-    defaultProfileImg =
-        'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
-    final String travel1 =
-        'https://images.unsplash.com/photo-1505578066158-8015e4136f59?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80';
-
-    switch (_index) {
-      case 0:
-        posts = foodList[0].sharedImg;
-        break;
-      case 1:
-        posts = travelList[0].sharedImg;
-        break;
-    }
-
     return new Stack(
       children: <Widget>[
         buildContainer(),
-        buildBackgroundImage(travel1, _height),
+        buildBackgroundImage(backgroundImage, _height),
         new Scaffold(
             resizeToAvoidBottomPadding: false,
             appBar: buildAppBar(),
             backgroundColor: Colors.transparent,
-            body: Container(
-              child: new Column(
-                children: <Widget>[
-                  buildProfileImage(
-                      _width, _height, userList[userID].userProfileImg),
-                  buildSizedBox(_height),
-                  buildNameSurnameText(userList[userID].userName, _width),
-                  buildJobText(userList[userID].userJob, _width, _height),
-                  buildRowButtons(),
-                  buildPosts(posts, _height),
-                ],
-              ),
-            ))
+            body: isLoading
+                ? Center(child: CircularProgressIndicator())
+                : Container(
+                    child: Column(
+                      children: <Widget>[
+                        buildProfileImage(),
+                        buildSizedBox(_height),
+                        buildNameSurnameText(userList[userID].userName, _width),
+                        buildJobText(userList[userID].userJob, _width, _height),
+                        buildRowButtons(),
+                        buildPosts(),
+                      ],
+                    ),
+                  ))
       ],
     );
   }
 
-  Expanded buildPosts(List<SharedImg> postList, double _height) {
+  Expanded buildPosts() {
     return Expanded(
       child: Container(
         color: Color(0xffedf4ff),
         child: Stack(
           children: [
-            buildGridView(postList),
-            Center(child: buildPaddingProgress),
+            buildGridView(),
           ],
         ),
       ),
@@ -77,7 +64,7 @@ class ProfileView extends ProfileViewModel {
     );
   }
 
-  GridView buildGridView(List<SharedImg> postList) {
+  GridView buildGridView() {
     return GridView.count(
       shrinkWrap: true,
       primary: true,
@@ -86,12 +73,12 @@ class ProfileView extends ProfileViewModel {
       crossAxisSpacing: 2.0,
       mainAxisSpacing: 2.0,
       children: List.generate(
-        postList.length,
+        posts.length,
         (index) {
           return Padding(
             padding: const EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
             child: Container(
-              decoration: buildPostImage(postList[index].url),
+              child: buildPostImage(posts[index]),
             ),
           );
         },
@@ -99,15 +86,23 @@ class ProfileView extends ProfileViewModel {
     );
   }
 
-  BoxDecoration buildPostImage(String postImage) {
-    return BoxDecoration(
-      color: Colors.black,
-      image: DecorationImage(
-        image: NetworkImage(postImage),
-        fit: BoxFit.cover,
-      ),
-      borderRadius: BorderRadius.all(
-        Radius.circular(10.0),
+  InkWell buildPostImage(ProductModel product) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Detail(product)));
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.black,
+          image: DecorationImage(
+            image: NetworkImage(product.sharedImg[0].url),
+            fit: BoxFit.cover,
+          ),
+          borderRadius: BorderRadius.all(
+            Radius.circular(10.0),
+          ),
+        ),
       ),
     );
   }
@@ -126,9 +121,10 @@ class ProfileView extends ProfileViewModel {
       onPressed: () {
         setState(() {
           view = 'food';
-        });
-        setState(() {
-          _index = 0;
+          index = 0;
+          if (isCompleted == true) {
+            posts = tempFoodList;
+          }
         });
       },
     );
@@ -140,22 +136,25 @@ class ProfileView extends ProfileViewModel {
       onPressed: () {
         setState(() {
           view = 'travel';
-        });
-        setState(() {
-          _index = 1;
+          index = 1;
+          if (isCompleted == true) {
+            posts = tempTravelList;
+          }
         });
       },
     );
   }
 
-  CircleAvatar buildProfileImage(
-      double _width, double _height, String profileImage) {
-    if (profileImage == null || profileImage.isEmpty == true)
-      profileImage = defaultProfileImg;
-    return CircleAvatar(
-      radius: _width < _height ? _width / 4 : _height / 4,
-      backgroundImage: NetworkImage(profileImage),
-    );
+  Widget buildProfileImage() {
+    if (userList.isNotEmpty) {
+      final profileImage = userList[userID].userProfileImg;
+      return CircleAvatar(
+        radius: _width < _height ? _width / 4 : _height / 4,
+        backgroundImage: NetworkImage(profileImage),
+      );
+    } else {
+      return SizedBox();
+    }
   }
 
   EdgeInsets buildJobTextEdgeInsets(double _height, double _width) {
@@ -222,23 +221,13 @@ class ProfileView extends ProfileViewModel {
           disabledColor: Colors.white,
           icon: Icon(Icons.edit),
           onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => EditProfile()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => EditProfile(/*userList[userID]*/)));
           },
         ),
       ],
-    );
-  }
-
-  Widget get buildPaddingProgress {
-    return Visibility(
-      visible: isLoading,
-      child: Padding(
-        padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.03),
-        child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(Color(0xff83a4d4)),
-        ),
-      ),
     );
   }
 }
