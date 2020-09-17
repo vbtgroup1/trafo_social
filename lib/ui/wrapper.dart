@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:travel_blog/core/base/model/user_model.dart';
+import 'package:travel_blog/ui/auth/view/auth.dart';
 import 'package:travel_blog/ui/home/view/home.dart';
-import 'package:travel_blog/ui/info_screen/info_screen1.dart';
 
 class Wrapper extends StatelessWidget {
   @override
@@ -11,7 +11,7 @@ class Wrapper extends StatelessWidget {
 
     // Return Home or Auth widget
     if (user == null) {
-      return InfoScreen();
+      return Auth();
     } else {
       return Home();
     }
