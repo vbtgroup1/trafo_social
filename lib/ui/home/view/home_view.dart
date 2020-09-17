@@ -9,6 +9,7 @@ import 'package:travel_blog/ui/home/viewmodel/home_viewmodel.dart';
 import 'package:travel_blog/ui/maps/screen/LoadingMapCircular.dart';
 import 'package:travel_blog/ui/post_page/postpage.dart';
 import 'package:travel_blog/ui/profile_page/view/profile.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeView extends HomeViewModel {
   static const storyListLength = 1000; // Dummy
@@ -18,7 +19,7 @@ class HomeView extends HomeViewModel {
   Future future;
   String get userPicUrl =>
       "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"; //shared pref profil img
-
+  SizedBox zeroHeightSizedBox = SizedBox(height: 0);
   @override
   Widget build(BuildContext context) {
     switch (_index) {
@@ -40,8 +41,8 @@ class HomeView extends HomeViewModel {
             });
           },
           items: [
-            buildBottomNavigationBarItem('Food', Icons.ac_unit),
-            buildBottomNavigationBarItem('Travel', Icons.ac_unit),
+            buildBottomNavigationBarItem('Food', "assets/icons/food.svg"),
+            buildBottomNavigationBarItem('Travel', "assets/icons/travel.svg"),
           ]),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
@@ -60,7 +61,6 @@ class HomeView extends HomeViewModel {
       elevation: 0,
       centerTitle: true,
       leading: buildIconButtonProfile(userPicUrl),
-      title: buildTextMainTitle('Feed'),
       actions: [
         buildIconButtonSearch(),
         buildFlatButtonLogOut(),
@@ -88,13 +88,6 @@ class HomeView extends HomeViewModel {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => Profile()));
       },
-    );
-  }
-
-  Text buildTextMainTitle(String title) {
-    return Text(
-      title,
-      style: AppConstants.appTextStyleTitle,
     );
   }
 
@@ -277,10 +270,10 @@ class HomeView extends HomeViewModel {
   }
 
   BottomNavigationBarItem buildBottomNavigationBarItem(
-      String text, IconData icon) {
+      String text, String icon) {
     return BottomNavigationBarItem(
-      icon: Icon(icon),
-      title: Text(text),
+      icon: Container(width: 30, height: 30, child: SvgPicture.asset(icon)),
+      title: zeroHeightSizedBox,
     );
   }
 }

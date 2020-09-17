@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:travel_blog/core/constants/constants.dart';
+import 'package:travel_blog/ui/detail/model/detail_constants.dart';
 import 'package:travel_blog/ui/detail/viewmodel/detail_viewmodel.dart';
 import 'package:travel_blog/ui/home/model/product_model.dart';
 import 'package:travel_blog/ui/maps/screen/LoadingMapCircular.dart';
@@ -9,49 +10,20 @@ class DetailView extends DetailViewModel {
   final ProductModel homeProductModel;
   DetailView(this.homeProductModel);
 
-//app Bar
   double get appBarButtonSize => MediaQuery.of(context).size.width * 0.08;
-  Color get appBarIconColor => Colors.black;
-  Color get appBartitleColor => Colors.black;
-  String get appBarTitleText => "Detail Page";
-
-  //detailBodyPadding
-  double get detailBodyPadding => 8.0;
-
-  //detailCard
   double get detailCardSizeWidth => MediaQuery.of(context).size.width * 0.9;
   double get detailCardSizeHeight => MediaQuery.of(context).size.width * 0.55;
-  double get detailCardRadius => 20.0;
-  double get detailCardVerticalMargin => 8.0;
-  double get detailCardHorizonalMargin => 5.0;
-
-  //detailUser
   double get detailUserProfileImgHeight =>
       MediaQuery.of(context).size.width * 0.15;
-  double get detailUserContainerVerticalMargin => 4.0;
-
-  double get detailUserRadius => 30.0;
-
-  //detailUserNameAndSharedDate
   double get detailUserNameAndSharedDateWidth =>
       MediaQuery.of(context).size.width * 0.35;
-
-  double get detailUserNameAndSharedDatePaddingLeft => 10.0;
-
   double get detailUserNameTextSize =>
       MediaQuery.of(context).size.width * 0.045;
-
   double get detailSharedDateTextSize =>
       MediaQuery.of(context).size.width * 0.035;
 
   String get detailUserName => homeProductModel.sharedUserName;
-
   String get detailSharedDate => homeProductModel.sharedDate;
-
-  Color get detailSharedDateColor => Colors.grey[400];
-
-  //detailContentText
-  double get detailContentTextPadding => 8.0;
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +36,7 @@ class DetailView extends DetailViewModel {
   AppBar appBar() {
     return AppBar(
         title: Text(
-          appBarTitleText,
+          DetailConstants.instance.appBarTitleText,
           style: AppConstants.appTextStyleTitle,
         ),
         centerTitle: true,
@@ -77,13 +49,14 @@ class DetailView extends DetailViewModel {
   IconButton appBarLeftIcon(context) {
     return IconButton(
         icon: new Icon(Icons.arrow_back,
-            color: appBarIconColor, size: appBarButtonSize),
+            color: DetailConstants.instance.appBarIconColor,
+            size: appBarButtonSize),
         onPressed: () => Navigator.of(context).pop(null));
   }
 
   Padding detailBody() {
     return Padding(
-      padding: EdgeInsets.all(detailBodyPadding),
+      padding: EdgeInsets.all(DetailConstants.instance.detailBodyPadding),
       child: Column(
         children: [
           imgListView(homeProductModel),
@@ -111,19 +84,22 @@ class DetailView extends DetailViewModel {
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(detailCardRadius),
-            topRight: Radius.circular(detailCardRadius),
+            topLeft: Radius.circular(DetailConstants.instance.detailCardRadius),
+            topRight:
+                Radius.circular(DetailConstants.instance.detailCardRadius),
           ),
         ),
         margin: EdgeInsets.symmetric(
-            vertical: detailCardVerticalMargin,
-            horizontal: detailCardHorizonalMargin),
+            vertical: DetailConstants.instance.detailCardVerticalMargin,
+            horizontal: DetailConstants.instance.detailCardHorizonalMargin),
         child: Container(
           width: detailCardSizeWidth,
           child: ClipRRect(
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(detailCardRadius),
-              topRight: Radius.circular(detailCardRadius),
+              topLeft:
+                  Radius.circular(DetailConstants.instance.detailCardRadius),
+              topRight:
+                  Radius.circular(DetailConstants.instance.detailCardRadius),
             ),
             child: Image.network(
               url,
@@ -137,7 +113,8 @@ class DetailView extends DetailViewModel {
 
   Container detailUserContainer() {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: detailUserContainerVerticalMargin),
+      margin: EdgeInsets.symmetric(
+          vertical: DetailConstants.instance.detailUserContainerVerticalMargin),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -154,7 +131,8 @@ class DetailView extends DetailViewModel {
     return Container(
       height: detailUserProfileImgHeight,
       child: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(detailUserRadius)),
+        borderRadius: BorderRadius.all(
+            Radius.circular(DetailConstants.instance.detailUserRadius)),
         child: Image.network(
           homeProductModel.sharedUserProfileImg,
           fit: BoxFit.fill,
@@ -165,7 +143,9 @@ class DetailView extends DetailViewModel {
 
   Padding detailUserNameAndSharedDate() {
     return Padding(
-      padding: EdgeInsets.only(left: detailUserNameAndSharedDatePaddingLeft),
+      padding: EdgeInsets.only(
+          left:
+              DetailConstants.instance.detailUserNameAndSharedDatePaddingLeft),
       child: Container(
         width: detailUserNameAndSharedDateWidth,
         child: Column(
@@ -217,7 +197,8 @@ class DetailView extends DetailViewModel {
 
   Padding detailContentText() {
     return Padding(
-      padding: EdgeInsets.all(detailContentTextPadding),
+      padding:
+          EdgeInsets.all(DetailConstants.instance.detailContentTextPadding),
       child: Column(
         children: [
           Text(
