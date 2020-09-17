@@ -1,58 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:travel_blog/ui/detail/view/detail.dart';
+import 'package:travel_blog/ui/home/model/product_model.dart';
 import 'package:travel_blog/ui/profile_edit_page/view/editProfile.dart';
 import 'package:travel_blog/ui/profile_page/viewmodel/profile_viewmodel.dart';
 
 class ProfileView extends ProfileViewModel {
-  @override
   String view = "food";
-  Widget build(BuildContext context) {
-    final _width = MediaQuery.of(context).size.width;
-    final _height = MediaQuery.of(context).size.height;
-    final String imgUrl =
-        'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
-    final String travel = 'https://gokovali.com/images/2018/06/06/azmak.jpg';
-    final String travell =
-        'https://media-cdn.tripadvisor.com/media/photo-s/09/51/c7/db/the-forest-camp.jpg';
-    List<String> myList = [
-      travell,
-      travel,
-      travell,
-      travel,
-      travell,
-      travel,
-      travell
-    ];
+  String defaultProfileImg =
+      'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
+  String backgroundImage =
+      'https://images.unsplash.com/photo-1505578066158-8015e4136f59?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80';
+  double get _width => MediaQuery.of(context).size.width;
+  double get _height => MediaQuery.of(context).size.height;
 
+  Widget build(BuildContext context) {
     return new Stack(
       children: <Widget>[
         buildContainer(),
-        buildBackgroundImage(travel),
+        buildBackgroundImage(backgroundImage, _height),
         new Scaffold(
             resizeToAvoidBottomPadding: false,
             appBar: buildAppBar(),
             backgroundColor: Colors.transparent,
-            body: Container(
-              child: new Column(
-                children: <Widget>[
-                  buildProfileImage(_width, _height, imgUrl),
-                  buildSizedBox(_height),
-                  buildNameSurnameText('Eric Ferkyd', _width),
-                  buildJobText('Computer Engineer', _width, _height),
-                  buildRowButtons(),
-                  buildPosts(myList),
-                ],
-              ),
-            ))
+            body: isLoading
+                ? Center(child: CircularProgressIndicator())
+                : Container(
+                    child: Column(
+                      children: <Widget>[
+                        buildProfileImage(),
+                        buildSizedBox(_height),
+                        buildNameSurnameText(userList[userID].userName, _width),
+                        buildJobText(userList[userID].userJob, _width, _height),
+                        buildRowButtons(),
+                        buildPosts(),
+                      ],
+                    ),
+                  ))
       ],
     );
   }
 
-  Expanded buildPosts(List<String> PostList) {
+  Expanded buildPosts() {
     return Expanded(
       child: Container(
         color: Color(0xffedf4ff),
-        child: buildGridView(PostList, 10),
+        child: Stack(
+          children: [
+            buildGridView(),
+          ],
+        ),
       ),
     );
   }
@@ -67,7 +64,7 @@ class ProfileView extends ProfileViewModel {
     );
   }
 
-  GridView buildGridView(List<String> postList, int postNumber) {
+  GridView buildGridView() {
     return GridView.count(
       shrinkWrap: true,
       primary: true,
@@ -76,12 +73,12 @@ class ProfileView extends ProfileViewModel {
       crossAxisSpacing: 2.0,
       mainAxisSpacing: 2.0,
       children: List.generate(
-        postList.length,
+        posts.length,
         (index) {
           return Padding(
-            padding: const EdgeInsets.all(5.0),
+            padding: const EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
             child: Container(
-              decoration: buildPostImage(postList[index]),
+              child: buildPostImage(posts[index]),
             ),
           );
         },
@@ -89,15 +86,23 @@ class ProfileView extends ProfileViewModel {
     );
   }
 
-  BoxDecoration buildPostImage(String PostImage) {
-    return BoxDecoration(
-      color: Colors.black,
-      image: DecorationImage(
-        image: NetworkImage(PostImage),
-        fit: BoxFit.cover,
-      ),
-      borderRadius: BorderRadius.all(
-        Radius.circular(10.0),
+  InkWell buildPostImage(ProductModel product) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Detail(product)));
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.black,
+          image: DecorationImage(
+            image: NetworkImage(product.sharedImg[0].url),
+            fit: BoxFit.cover,
+          ),
+          borderRadius: BorderRadius.all(
+            Radius.circular(10.0),
+          ),
+        ),
       ),
     );
   }
@@ -116,6 +121,10 @@ class ProfileView extends ProfileViewModel {
       onPressed: () {
         setState(() {
           view = 'food';
+          index = 0;
+          if (isCompleted == true) {
+            posts = tempFoodList;
+          }
         });
       },
     );
@@ -127,17 +136,25 @@ class ProfileView extends ProfileViewModel {
       onPressed: () {
         setState(() {
           view = 'travel';
+          index = 1;
+          if (isCompleted == true) {
+            posts = tempTravelList;
+          }
         });
       },
     );
   }
 
-  CircleAvatar buildProfileImage(
-      double _width, double _height, String profileImage) {
-    return CircleAvatar(
-      radius: _width < _height ? _width / 4 : _height / 4,
-      backgroundImage: NetworkImage(profileImage),
-    );
+  Widget buildProfileImage() {
+    if (userList.isNotEmpty) {
+      final profileImage = userList[userID].userProfileImg;
+      return CircleAvatar(
+        radius: _width < _height ? _width / 4 : _height / 4,
+        backgroundImage: NetworkImage(profileImage),
+      );
+    } else {
+      return SizedBox();
+    }
   }
 
   EdgeInsets buildJobTextEdgeInsets(double _height, double _width) {
@@ -149,6 +166,7 @@ class ProfileView extends ProfileViewModel {
   }
 
   Padding buildJobText(String job, double _width, double _height) {
+    if (job == null) job = ' ';
     return Padding(
         padding: buildJobTextEdgeInsets(_height, _width),
         child: Text(
@@ -175,10 +193,11 @@ class ProfileView extends ProfileViewModel {
         ));
   }
 
-  Image buildBackgroundImage(String travel) {
+  Image buildBackgroundImage(String travel, double _height) {
     return new Image.network(
       travel,
-      fit: BoxFit.cover,
+      height: _height * 0.51,
+      fit: BoxFit.fill,
     );
   }
 
@@ -202,8 +221,10 @@ class ProfileView extends ProfileViewModel {
           disabledColor: Colors.white,
           icon: Icon(Icons.edit),
           onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => EditProfile()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => EditProfile(/*userList[userID]*/)));
           },
         ),
       ],

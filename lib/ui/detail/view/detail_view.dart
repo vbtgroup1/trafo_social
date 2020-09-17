@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:travel_blog/core/constants/constants.dart';
 import 'package:travel_blog/ui/detail/viewmodel/detail_viewmodel.dart';
+import 'package:travel_blog/ui/home/model/product_model.dart';
+import 'package:travel_blog/ui/maps/screen/LoadingMapCircular.dart';
 
 class DetailView extends DetailViewModel {
+  final ProductModel homeProductModel;
+  DetailView(this.homeProductModel);
+
 //app Bar
   double get appBarButtonSize => MediaQuery.of(context).size.width * 0.08;
-  double get appBarTitleSize => MediaQuery.of(context).size.width * 0.08;
   Color get appBarIconColor => Colors.black;
   Color get appBartitleColor => Colors.black;
   String get appBarTitleText => "Detail Page";
@@ -13,27 +19,35 @@ class DetailView extends DetailViewModel {
   double get detailBodyPadding => 8.0;
 
   //detailCard
-  double get detailCardSizeWidth => MediaQuery.of(context).size.width * 1;
+  double get detailCardSizeWidth => MediaQuery.of(context).size.width * 0.9;
   double get detailCardSizeHeight => MediaQuery.of(context).size.width * 0.55;
   double get detailCardRadius => 20.0;
   double get detailCardVerticalMargin => 8.0;
+  double get detailCardHorizonalMargin => 5.0;
 
   //detailUser
   double get detailUserProfileImgHeight =>
       MediaQuery.of(context).size.width * 0.15;
   double get detailUserContainerVerticalMargin => 4.0;
+
   double get detailUserRadius => 30.0;
 
   //detailUserNameAndSharedDate
   double get detailUserNameAndSharedDateWidth =>
       MediaQuery.of(context).size.width * 0.35;
+
   double get detailUserNameAndSharedDatePaddingLeft => 10.0;
+
   double get detailUserNameTextSize =>
       MediaQuery.of(context).size.width * 0.045;
+
   double get detailSharedDateTextSize =>
       MediaQuery.of(context).size.width * 0.035;
-  String get detailUserName => "Grant Marshall";
-  String get detailSharedDate => "January 9,2020";
+
+  String get detailUserName => homeProductModel.sharedUserName;
+
+  String get detailSharedDate => homeProductModel.sharedDate;
+
   Color get detailSharedDateColor => Colors.grey[400];
 
   //detailContentText
@@ -51,10 +65,7 @@ class DetailView extends DetailViewModel {
     return AppBar(
         title: Text(
           appBarTitleText,
-          style: TextStyle(
-              color: appBartitleColor,
-              fontWeight: FontWeight.bold,
-              fontSize: appBarTitleSize),
+          style: AppConstants.appTextStyleTitle,
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
@@ -75,7 +86,7 @@ class DetailView extends DetailViewModel {
       padding: EdgeInsets.all(detailBodyPadding),
       child: Column(
         children: [
-          detailCard(),
+          imgListView(homeProductModel),
           detailUserContainer(),
           detailContentText(),
         ],
@@ -83,7 +94,19 @@ class DetailView extends DetailViewModel {
     );
   }
 
-  Center detailCard() {
+  Container imgListView(ProductModel productModel) {
+    return Container(
+      height: detailCardSizeHeight,
+      child: ListView.builder(
+        itemCount: productModel.sharedImg.length,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) =>
+            detailCard(productModel.sharedImg[index].url),
+      ),
+    );
+  }
+
+  Center detailCard(String url) {
     return Center(
       child: Card(
         shape: RoundedRectangleBorder(
@@ -92,17 +115,18 @@ class DetailView extends DetailViewModel {
             topRight: Radius.circular(detailCardRadius),
           ),
         ),
-        margin: EdgeInsets.symmetric(vertical: detailCardVerticalMargin),
+        margin: EdgeInsets.symmetric(
+            vertical: detailCardVerticalMargin,
+            horizontal: detailCardHorizonalMargin),
         child: Container(
           width: detailCardSizeWidth,
-          height: detailCardSizeHeight,
           child: ClipRRect(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(detailCardRadius),
               topRight: Radius.circular(detailCardRadius),
             ),
             child: Image.network(
-              "https://cdn2.enuygun.com/media/lib/uploads/image/kamp-yerleri-7536.jpeg",
+              url,
               fit: BoxFit.fill,
             ),
           ),
@@ -132,7 +156,7 @@ class DetailView extends DetailViewModel {
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(detailUserRadius)),
         child: Image.network(
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS6zes53m4a_2VLTcmTn_bHk8NO5SkuWfcQbg&usqp=CAU",
+          homeProductModel.sharedUserProfileImg,
           fit: BoxFit.fill,
         ),
       ),
@@ -159,25 +183,32 @@ class DetailView extends DetailViewModel {
   Text detailUserNameText() {
     return Text(
       detailUserName,
-      style: TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
-          fontSize: detailUserNameTextSize),
+      style: AppConstants.appTextStyleUserName,
     );
   }
 
   Text detailSharedDateText() {
     return Text(
       detailSharedDate,
-      style: TextStyle(
-          color: detailSharedDateColor, fontSize: detailSharedDateTextSize),
+      style: AppConstants.appTextStyleShareDate,
     );
   }
 
   Row detailUserIconList() {
     return Row(
       children: [
-        IconButton(icon: Icon(Icons.location_on), onPressed: null),
+        IconButton(
+            icon: Icon(Icons.location_on),
+            onPressed: () {
+              double lat = double.parse(homeProductModel.sharedLat);
+              double long = double.parse(homeProductModel.sharedLong);
+              LatLng tempLatLng = LatLng(lat, long);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          LoadingMapCircular(true, latLng: tempLatLng)));
+            }),
         IconButton(icon: Icon(Icons.favorite), onPressed: null),
         IconButton(icon: Icon(Icons.bookmark_border), onPressed: null)
       ],
@@ -190,8 +221,10 @@ class DetailView extends DetailViewModel {
       child: Column(
         children: [
           Text(
-              "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-              textAlign: TextAlign.justify),
+            homeProductModel.sharedText,
+            textAlign: TextAlign.justify,
+            style: AppConstants.appTextStyleContent,
+          ),
         ],
       ),
     );

@@ -1,5 +1,6 @@
-import 'package:travel_blog/ui/home/model/home_model.dart';
+import 'package:travel_blog/ui/home/model/product_model.dart';
 
 abstract class IHomeService {
-  Future<List<HomeModel>> getDiscountList();
+  Future<List<ProductModel>> getFoodList();
+  Future<List<ProductModel>> getTravelList();
 }

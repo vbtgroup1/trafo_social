@@ -1,23 +1,17 @@
 import 'package:travel_blog/core/base/model/base_model.dart';
 
 class DetailModel extends BaseModel<DetailModel> {
-  String category;
-  String count;
-  String imgurl;
+  String url;
 
-  DetailModel({this.category, this.count, this.imgurl});
+  DetailModel({this.url});
 
   DetailModel.fromJson(Map<String, dynamic> json) {
-    category = json['category'];
-    count = json['count'];
-    imgurl = json['imgurl'];
+    url = json['url'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['category'] = this.category;
-    data['count'] = this.count;
-    data['imgurl'] = this.imgurl;
+    data['url'] = this.url;
     return data;
   }
 
