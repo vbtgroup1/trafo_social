@@ -35,10 +35,11 @@ dependencies:
   dotted_border: ^1.0.6
   flutter_svg: ^0.19.0
   image_picker_gallery_camera: ^0.1.6
-
+  flutter_signin_button: ^1.1.0
   image_picker: ^0.6.7+7
   flutter_datetime_picker: ^1.4.0
   gender_picker: ^1.0.2
+  firebase_storage: ^4.0.0
 
   location: ^3.0.0
   google_maps_flutter: ^0.5.28+1
@@ -59,7 +60,6 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter.
 flutter:
   # The following line ensures that the Material Icons font is
@@ -70,3 +70,4 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+
