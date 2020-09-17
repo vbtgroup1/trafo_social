@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:travel_blog/core/base/model/error_model.dart';
 import 'package:travel_blog/ui/detail/model/detail_model.dart';
 import 'package:travel_blog/ui/detail/viewmodel/detail_viewmodel.dart';
-import 'package:travel_blog/ui/home/model/card_model.dart';
+import 'package:travel_blog/ui/profile_page/model/product_model.dart';
 
 class DetailView extends DetailViewModel {
-  final CardModel homeCardModel;
+  final ProductModel homeCardModel;
   DetailView(this.homeCardModel);
 
 //app Bar

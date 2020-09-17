@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:travel_blog/core/base/model/user_model.dart';
 import 'package:travel_blog/ui/auth/service/auth_service.dart';
-import 'package:travel_blog/ui/splash/splash.dart';
+import 'package:travel_blog/ui/profile_page/view/profile.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     return StreamProvider<UserModel>.value(
       value: AuthService().user,
       child: MaterialApp(
-        home: Splash(),
+        home: Profile(),
         debugShowCheckedModeBanner: false,
         title: 'Travel Blog',
       ),
