@@ -169,8 +169,12 @@ class HomeView extends HomeViewModel {
                   child: Image.network(travelList.sharedImg[0].url,
                       height: 180, fit: BoxFit.fill),
                 ),
-                homeUserContainer(travelList.sharedUserProfileImg,
-                    travelList.sharedUserName, travelList.sharedDate),
+                homeUserContainer(
+                    travelList.sharedUserProfileImg,
+                    travelList.sharedUserName,
+                    travelList.sharedDate,
+                    travelList.sharedLat,
+                    travelList.sharedLong),
               ],
             ),
           ),
@@ -179,15 +183,15 @@ class HomeView extends HomeViewModel {
     );
   }
 
-  Widget homeUserContainer(
-      String userPicUrl, String userName, String shareDate) {
+  Widget homeUserContainer(String userPicUrl, String userName, String shareDate,
+      String lat, String long) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         homeUserProfileImg(userPicUrl),
         homeUserNameAndSharedDate(userName, shareDate),
         Spacer(),
-        homeUserIconList()
+        homeUserIconList(lat, long)
       ],
     );
   }
@@ -240,7 +244,7 @@ class HomeView extends HomeViewModel {
     );
   }
 
-  Row homeUserIconList() {
+  Row homeUserIconList(String lat, String long) {
     return Row(
       children: [
         IconButton(icon: Icon(Icons.location_on), onPressed: () {}),
