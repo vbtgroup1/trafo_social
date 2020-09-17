@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:travel_blog/ui/maps/screen/MapScreen.dart';
 
-import '../locationServices.dart';
+import '../services/locationServices.dart';
 
 class LoadingMapCircular extends StatefulWidget {
   @override
