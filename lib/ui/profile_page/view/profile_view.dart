@@ -188,23 +188,15 @@ class ProfileView extends ProfileViewModel {
   Text buildNameSurnameText(String nameSurname, double _width) {
     return Text(nameSurname,
         style: GoogleFonts.montserrat(
-          fontSize: _width / 20,
-          fontWeight: FontWeight.bold,
-        ));
+            fontSize: _width / 20, fontWeight: FontWeight.bold));
   }
 
   Image buildBackgroundImage(String travel, double _height) {
-    return new Image.network(
-      travel,
-      height: _height * 0.51,
-      fit: BoxFit.fill,
-    );
+    return new Image.network(travel, height: _height * 0.51, fit: BoxFit.fill);
   }
 
   Container buildContainer() {
-    return new Container(
-      color: Colors.white,
-    );
+    return new Container(color: Colors.white);
   }
 
   AppBar buildAppBar() {
@@ -212,10 +204,9 @@ class ProfileView extends ProfileViewModel {
       elevation: 0.0,
       backgroundColor: Colors.transparent,
       leading: IconButton(
-        disabledColor: Colors.black,
-        icon: const Icon(Icons.arrow_back),
-        onPressed: () {},
-      ),
+          disabledColor: Colors.black,
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {}),
       actions: [
         IconButton(
           disabledColor: Colors.white,
@@ -224,7 +215,7 @@ class ProfileView extends ProfileViewModel {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => EditProfile(/*userList[userID]*/)));
+                    builder: (context) => EditProfile(userList[0])));
           },
         ),
       ],

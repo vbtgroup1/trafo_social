@@ -6,6 +6,7 @@ import 'package:gender_picker/source/enums.dart';
 import 'package:gender_picker/source/gender_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travel_blog/ui/profile_edit_page/viewModel/editProfileViewModel.dart';
+import 'package:travel_blog/ui/profile_page/model/user_model.dart';
 
 double deviceWidth;
 double deviceHeight;
@@ -33,16 +34,23 @@ class EditProfileView extends EditProfileViewModel {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               isEditingData
-                  ? editingTopBar(topBarHeight, savedProfileState)
+                  ? editingTopBar(
+                      topBarHeight, savedProfileState, nonSavedProfileState)
                   : noneditingTopBar(topBarHeight, context),
               SizedBox(height: topBottomPadding),
               profileImage(getImage, pickedImage, circleProfileImageRadius,
-                  isImagePicking, isEditingData),
-              profileInfoList(textEditingController, textFieldsDefaultValues,
-                  isEditingData),
-              dateTimePicker(textFieldsDefaultValues[3], isEditingData, context,
+                  isImagePicking, isEditingData, userModel.userProfileImg),
+              profileInfoList(userModel, textEditingController,
+                  textFieldsDefaultValues, isEditingData),
+              dateTimePicker(
+                  textEditingController[3],
+                  textFieldsDefaultValues[3],
+                  dateTime,
+                  isEditingData,
+                  context,
                   getDateTime),
-              genderPicker(saveGender, isEditingData, selectedGender),
+              genderPicker(textEditingController[4], saveGender, isEditingData,
+                  selectedGender),
               buttonIsVisible ? editButton(editProfileState) : SizedBox(),
               // GestureDetector(
               //   onTap: () async {
@@ -56,11 +64,6 @@ class EditProfileView extends EditProfileViewModel {
               //       print(latLng.longitude.toString());
               //     }
               //   },
-              //   child: Container(
-              //     color: Colors.black,
-              //     width: 200,
-              //     height: 100,
-              //   ),
               // ),
             ],
           ),
@@ -96,41 +99,47 @@ Widget noneditingProfileData(BuildContext context) {
   ));
 }
 
-Widget editingTopBar(double topBarHeight, Function savedProfileState) {
+Widget editingTopBar(double topBarHeight, Function savedProfileState,
+    Function nonSavedProfileState) {
   return Container(
     width: double.infinity,
     height: topBarHeight,
     child: Card(
       color: Colors.white,
       elevation: 10,
-      child: editingProfileData(savedProfileState),
+      child: editingProfileData(savedProfileState, nonSavedProfileState),
     ),
   );
 }
 
-Widget editingProfileData(Function savedProfileState) {
+Widget editingProfileData(Function savedProfileState,
+    Function nonSavedProfileState) {
   return Center(
       child: ListTile(
-    leading:
-        GestureDetector(child: Icon(Icons.close), onTap: savedProfileState),
-    trailing:
+        leading:
+        GestureDetector(child: Icon(Icons.close), onTap: nonSavedProfileState),
+        trailing:
         GestureDetector(child: Icon(Icons.check), onTap: savedProfileState),
-    title: Text(
-      "Edit Profile",
-      style: GoogleFonts.montserrat(fontSize: 24, fontWeight: FontWeight.bold),
-    ),
+        title: Text(
+          "Edit Profile",
+          style: GoogleFonts.montserrat(
+              fontSize: 24, fontWeight: FontWeight.bold),
+        ),
   ));
 }
 
-Widget profileImage(Function pickImageFromGallery, File profileImage,
-    double imageRadius, bool isImagePicking, bool isEditingData) {
+Widget profileImage(Function pickImageFromGallery,
+    File profileImage,
+    double imageRadius,
+    bool isImagePicking,
+    bool isEditingData,
+    String imgLink) {
   return Stack(
     alignment: AlignmentDirectional.bottomEnd,
     children: [
       CircleAvatar(
-        backgroundImage: isImagePicking
-            ? FileImage(profileImage)
-            : AssetImage('assets/images/profileUser.png'),
+        backgroundImage:
+        isImagePicking ? FileImage(profileImage) : NetworkImage(imgLink),
         radius: imageRadius,
       ),
       FloatingActionButton(
@@ -143,22 +152,34 @@ Widget profileImage(Function pickImageFromGallery, File profileImage,
   );
 }
 
-ListView profileInfoList(List textEditingController,
+ListView profileInfoList(UserModel userModel, List textEditingController,
     List textFieldsDefaultValues, bool isEditingData) {
   return ListView.builder(
     physics: NeverScrollableScrollPhysics(),
     shrinkWrap: true,
     itemCount: 3,
     itemBuilder: (context, index) {
-      textEditingController.add(new TextEditingController());
-      return textFields(textEditingController[index],
+      String info = "";
+      if (index == 0)
+        info = userModel.userName;
+      else if (index == 1)
+        info = userModel.userEmail;
+      else if (index == 2) info = userModel.userJob;
+      return textFields(info, textEditingController[index],
           textFieldsDefaultValues[index], isEditingData);
     },
   );
 }
 
-Widget textFields(
-    TextEditingController controller, String defaultValue, bool isEditingData) {
+bool isDefault = true;
+
+Widget textFields(String userValue, TextEditingController controller,
+    String defaultValue, bool isEditingData) {
+  if (isDefault) {
+    controller.text = userValue;
+    isDefault = false;
+  }
+
   return Card(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(circularRadius),
@@ -167,6 +188,9 @@ Widget textFields(
     child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
       child: TextField(
+          onSubmitted: (value) {
+            controller.text = value;
+          },
           controller: controller,
           decoration: InputDecoration(
             labelText: defaultValue,
@@ -176,7 +200,8 @@ Widget textFields(
   );
 }
 
-Widget genderPicker(Function save, bool isEditingData, Gender selectedGender) {
+Widget genderPicker(TextEditingController controller, Function save,
+    bool isEditingData, Gender selectedGender) {
   return Container(
     width: genderIconSize * 2,
     child: GenderPickerWithImage(
@@ -192,13 +217,24 @@ Widget genderPicker(Function save, bool isEditingData, Gender selectedGender) {
         size: genderIconSize,
         selectedGender: selectedGender,
         onChanged: (Gender gender) {
-          save(gender);
+          if (gender.index == 0)
+            controller.text = 'Male';
+          else
+            controller.text = 'Female';
         }),
   );
 }
 
-Widget dateTimePicker(String defaultValue, bool isEditingData,
-    BuildContext context, Function getDateTime) {
+bool isDateFirstPicker = true;
+
+Widget dateTimePicker(TextEditingController controller,
+    String defaultValue,
+    String dateTime,
+    bool isEditingData,
+    BuildContext context,
+    Function getDateTime) {
+  controller.text = dateTime;
+
   return GestureDetector(
     child: Card(
         shape: RoundedRectangleBorder(
@@ -208,8 +244,9 @@ Widget dateTimePicker(String defaultValue, bool isEditingData,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30),
           child: TextField(
+              controller: controller,
               decoration:
-                  InputDecoration(labelText: defaultValue, enabled: false)),
+              InputDecoration(labelText: defaultValue, enabled: false)),
         )),
     onTap: isEditingData ? getDateTime : null,
   );
