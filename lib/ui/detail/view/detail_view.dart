@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:travel_blog/core/base/model/error_model.dart';
-import 'package:travel_blog/ui/detail/model/detail_model.dart';
+import 'package:travel_blog/core/constants/constants.dart';
 import 'package:travel_blog/ui/detail/viewmodel/detail_viewmodel.dart';
-import 'package:travel_blog/ui/home/model/card_model.dart';
+import 'package:travel_blog/ui/home/model/product_model.dart';
 
 class DetailView extends DetailViewModel {
-  final CardModel homeCardModel;
-  DetailView(this.homeCardModel);
+  final ProductModel homeProductModel;
+  DetailView(this.homeProductModel);
 
 //app Bar
   double get appBarButtonSize => MediaQuery.of(context).size.width * 0.08;
-  double get appBarTitleSize => MediaQuery.of(context).size.width * 0.08;
   Color get appBarIconColor => Colors.black;
   Color get appBartitleColor => Colors.black;
   String get appBarTitleText => "Detail Page";
@@ -39,8 +37,8 @@ class DetailView extends DetailViewModel {
       MediaQuery.of(context).size.width * 0.045;
   double get detailSharedDateTextSize =>
       MediaQuery.of(context).size.width * 0.035;
-  String get detailUserName => "Grant Marshall";
-  String get detailSharedDate => "January 9,2020";
+  String get detailUserName => widget.homeProductModel.sharedUserName;
+  String get detailSharedDate => widget.homeProductModel.sharedDate;
   Color get detailSharedDateColor => Colors.grey[400];
 
   //detailContentText
@@ -58,10 +56,7 @@ class DetailView extends DetailViewModel {
     return AppBar(
         title: Text(
           appBarTitleText,
-          style: TextStyle(
-              color: appBartitleColor,
-              fontWeight: FontWeight.bold,
-              fontSize: appBarTitleSize),
+          style: AppConstants.appTextStyleTitle,
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
@@ -82,7 +77,7 @@ class DetailView extends DetailViewModel {
       padding: EdgeInsets.all(detailBodyPadding),
       child: Column(
         children: [
-          imgListFutureBuilder(),
+          imgListView(widget.homeProductModel),
           detailUserContainer(),
           detailContentText(),
         ],
@@ -90,44 +85,19 @@ class DetailView extends DetailViewModel {
     );
   }
 
-  Container imgListFutureBuilder() {
+  Container imgListView(ProductModel productModel) {
     return Container(
       height: detailCardSizeHeight,
-      child: FutureBuilder<List<DetailModel>>(
-        future: detailService.getImgList(),
-        builder:
-            (BuildContext context, AsyncSnapshot<List<DetailModel>> snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.active:
-            case ConnectionState.waiting:
-              return Center(child: CircularProgressIndicator());
-            case ConnectionState.done:
-              if (snapshot.hasData) {
-                return imgListView(snapshot.data);
-              } else {
-                final error = snapshot.error as ErrorModel;
-                return Center(
-                  child: Text(error.text),
-                );
-              }
-              break;
-            default:
-              return Text("Something went wrong");
-          }
-        },
+      child: ListView.builder(
+        itemCount: productModel.sharedImg.length,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) =>
+            detailCard(productModel.sharedImg[index].url),
       ),
     );
   }
 
-  ListView imgListView(List<DetailModel> imgList) {
-    return ListView.builder(
-      itemCount: imgList.length,
-      scrollDirection: Axis.horizontal,
-      itemBuilder: (context, index) => detailCard(imgList[index]),
-    );
-  }
-
-  Center detailCard(DetailModel imgList) {
+  Center detailCard(String url) {
     return Center(
       child: Card(
         shape: RoundedRectangleBorder(
@@ -147,7 +117,7 @@ class DetailView extends DetailViewModel {
               topRight: Radius.circular(detailCardRadius),
             ),
             child: Image.network(
-              imgList.url,
+              url,
               fit: BoxFit.fill,
             ),
           ),
@@ -177,7 +147,7 @@ class DetailView extends DetailViewModel {
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(detailUserRadius)),
         child: Image.network(
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS6zes53m4a_2VLTcmTn_bHk8NO5SkuWfcQbg&usqp=CAU",
+          widget.homeProductModel.sharedUserProfileImg,
           fit: BoxFit.fill,
         ),
       ),
@@ -204,18 +174,14 @@ class DetailView extends DetailViewModel {
   Text detailUserNameText() {
     return Text(
       detailUserName,
-      style: TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
-          fontSize: detailUserNameTextSize),
+      style: AppConstants.appTextStyleUserName,
     );
   }
 
   Text detailSharedDateText() {
     return Text(
       detailSharedDate,
-      style: TextStyle(
-          color: detailSharedDateColor, fontSize: detailSharedDateTextSize),
+      style: AppConstants.appTextStyleShareDate,
     );
   }
 
@@ -235,8 +201,10 @@ class DetailView extends DetailViewModel {
       child: Column(
         children: [
           Text(
-              "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-              textAlign: TextAlign.justify),
+            widget.homeProductModel.sharedText,
+            textAlign: TextAlign.justify,
+            style: AppConstants.appTextStyleContent,
+          ),
         ],
       ),
     );
