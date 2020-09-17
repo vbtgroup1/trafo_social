@@ -27,19 +27,20 @@ class BodyUI extends StatefulWidget {
 }
 
 class _BodyUIState extends State<BodyUI> {
-
   Future<String> resmiGonder() async {
     StorageReference resimYeri =
         FirebaseStorage.instance.ref().child(resimYolu);
 
-         StorageUploadTask yuklemeGorevi = resimYeri.putFile(resim);
-         
-         var indirmeUrl = await (await yuklemeGorevi.onComplete).ref.getDownloadURL();
-         
-         var url = indirmeUrl.toString();
+    StorageUploadTask yuklemeGorevi = resimYeri.putFile(resim);
 
+    var indirmeUrl =
+        await (await yuklemeGorevi.onComplete).ref.getDownloadURL();
 
-        return url;
+    var url = indirmeUrl.toString();
+    
+    print("indirme urlsi: "+ url);
+
+    return url;
   }
 
   /////////////////////////////////
