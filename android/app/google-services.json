@@ -6,7 +6,7 @@
     "storage_bucket": "fb-travel-app.appspot.com"
   },
   "client": [
-    {
+  /*  {
       "client_info": {
         "mobilesdk_app_id": "1:250488707104:android:cb3e58c32ca55821778445",
         "android_client_info": {
@@ -35,6 +35,7 @@
         }
       }
     },
+    */
     {
       "client_info": {
         "mobilesdk_app_id": "1:250488707104:android:a271e98c7567b518778445",

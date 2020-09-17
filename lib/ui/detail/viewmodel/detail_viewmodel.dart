@@ -28,7 +28,7 @@ abstract class DetailViewModel extends State<Detail> {
 
   Future<void> callItems() async {
     changeLoading();
-    await getDiscountList();
+    await getImgList();
     changeLoading();
   }
 
@@ -38,7 +38,7 @@ abstract class DetailViewModel extends State<Detail> {
     });
   }
 
-  Future<void> getDiscountList() async {
-    detailList = await detailService.getDiscountList();
+  Future<void> getImgList() async {
+    detailList = await detailService.getImgList();
   }
 }
