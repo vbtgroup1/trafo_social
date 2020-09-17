@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travel_blog/info_screen/info_screen1.dart';
 import 'package:travel_blog/post_page/postpage.dart';
 
 import 'ui/splash/splash.dart';

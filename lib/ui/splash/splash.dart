@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:travel_blog/info_screen/info_screen1.dart';
 import 'package:travel_blog/ui/home/view/home.dart';
 import 'package:travel_blog/ui/splash/showup.dart';
 
@@ -23,7 +24,7 @@ class _SplashState extends State<Splash> {
   void initState() {
     super.initState();
     Future.delayed(Duration(seconds: 5), () {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => InfoScreen()));
     });
   }
 
@@ -31,27 +32,42 @@ class _SplashState extends State<Splash> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: Padding(
-          padding: EdgeInsets.symmetric(vertical: verticalPadding),
-          child: ListView(
-            children: [
-              Lottie.network(
-                'https://assets7.lottiefiles.com/datafiles/AtGF4p7zA8LpP2R/data.json',
-                height: animationHeight,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: verticalPadding),
-                child: ShowUp(
-                  child: Text(
-                    "Travel Blog",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: appTitleSize, fontWeight: FontWeight.bold),
-                  ),
-                  delay: 2000,
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              stops: [0.1, 0.3, 0.7, 0.9],
+              colors: [
+                Color(0xFFFFFFF),
+                Color(0xFFC1D2EA),
+                Color(0xFFA2BBDF),
+                Color(0xff83a4d4),
+              ],
+            ),
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: verticalPadding),
+            child: ListView(
+              children: [
+                Lottie.network(
+                  'https://assets7.lottiefiles.com/datafiles/AtGF4p7zA8LpP2R/data.json',
+                  height: animationHeight,
                 ),
-              ),
-            ],
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: verticalPadding),
+                  child: ShowUp(
+                    child: Text(
+                      "Travel Blog",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: appTitleSize, fontWeight: FontWeight.bold),
+                    ),
+                    delay: 2000,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

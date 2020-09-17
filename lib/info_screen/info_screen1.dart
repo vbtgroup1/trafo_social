@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:travel_blog/ui/home/view/home.dart';
 
 class InfoScreen extends StatefulWidget {
   @override
@@ -45,9 +46,11 @@ class _InfoScreenState extends State<InfoScreen> {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              stops: [0.1, 0.9],
+              stops: [0.1, 0.3, 0.7, 0.9],
               colors: [
                 Color(0xFFFFFFF),
+                Color(0xFFC1D2EA),
+                Color(0xFFA2BBDF),
                 Color(0xff83a4d4),
               ],
             ),
@@ -65,7 +68,7 @@ class _InfoScreenState extends State<InfoScreen> {
                           MaterialPageRoute(builder: (context) => null));
                     },
                     child: Text(
-                      'Geç',
+                      'Skip',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20.0,
@@ -90,22 +93,26 @@ class _InfoScreenState extends State<InfoScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Center(
-                             
+                              child: SvgPicture.asset(
+                                "assets/images/travel1.svg",
+                                height: 300,
+                                width: 300,
+                              ),
                             ),
                             SizedBox(height: 30.0),
                             Text(
-                              "Add a Text",
+                              "We designed a maniac app!",
                               style: GoogleFonts.montserrat(
                                   color: Colors.black,
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.w300),
+                                  fontSize: 23.0,
+                                  fontWeight: FontWeight.w500),
                             ),
                             SizedBox(height: 15.0),
                             Text(
-                              "Add a Text",
+                              "You can share everything you see while travelling.",
                               style: GoogleFonts.montserrat(
                                   color: Colors.black,
-                                  fontSize: 15.0,
+                                  fontSize: 20.0,
                                   fontWeight: FontWeight.w300),
                             ),
                           ],
@@ -117,28 +124,26 @@ class _InfoScreenState extends State<InfoScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Center(
-                              child: Image(
-                                image: AssetImage(
-                                  'assets/images/image2.png',
-                                ),
-                                height: 300.0,
-                                width: 300.0,
+                              child: SvgPicture.asset(
+                                "assets/images/travel3.svg",
+                                height: 300,
+                                width: 300,
                               ),
                             ),
                             SizedBox(height: 30.0),
-                            Text(
-                              "Add a Text",
+                             Text(
+                              "Discover the locations!",
                               style: GoogleFonts.montserrat(
                                   color: Colors.black,
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.w300),
+                                  fontSize: 23.0,
+                                  fontWeight: FontWeight.w500),
                             ),
                             SizedBox(height: 15.0),
                             Text(
-                              "Add a Text",
+                              "You can use the locations to sharing.",
                               style: GoogleFonts.montserrat(
                                   color: Colors.black,
-                                  fontSize: 15.0,
+                                  fontSize: 20.0,
                                   fontWeight: FontWeight.w300),
                             ),
                           ],
@@ -150,28 +155,26 @@ class _InfoScreenState extends State<InfoScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Center(
-                              child: Image(
-                                image: AssetImage(
-                                  'assets/image3.png',
-                                ),
-                                height: 300.0,
-                                width: 300.0,
+                              child: SvgPicture.asset(
+                                "assets/images/travel2.svg",
+                                height: 300,
+                                width: 300,
                               ),
                             ),
                             SizedBox(height: 30.0),
-                            Text(
-                              "Add a Text",
+                             Text(
+                              "Are you still using Instagram?",
                               style: GoogleFonts.montserrat(
                                   color: Colors.black,
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.w300),
+                                  fontSize: 22.0,
+                                  fontWeight: FontWeight.w500),
                             ),
                             SizedBox(height: 15.0),
                             Text(
-                              "Add a Text",
+                              "Try the traFo, not Trivago.",
                               style: GoogleFonts.montserrat(
                                   color: Colors.black,
-                                  fontSize: 15.0,
+                                  fontSize: 20.0,
                                   fontWeight: FontWeight.w300),
                             ),
                           ],
@@ -230,16 +233,15 @@ class _InfoScreenState extends State<InfoScreen> {
               color: Colors.white,
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => null));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
                 },
                 child: Center(
                   child: Padding(
                     padding: EdgeInsets.only(bottom: 30.0),
                     child: Text(
-                      'Hadi Başlayalım',
+                      "Let's Start",
                       style: TextStyle(
-                        color: Color(0xFF5B16D0),
+                        color: Color(0xFF83a4d4),
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold,
                       ),
