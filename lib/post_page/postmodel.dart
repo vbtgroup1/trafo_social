@@ -1,7 +1,4 @@
-import 'package:travel_blog/core/base/model/base_model.dart';
-import 'package:travel_blog/ui/profile_page/model/sharedImage_model.dart';
-
-class TravelModel extends BaseModel<TravelModel> {
+class PostModel {
   String sharedDate;
   List<SharedImg> sharedImg;
   String sharedLat;
@@ -11,7 +8,7 @@ class TravelModel extends BaseModel<TravelModel> {
   String sharedUserName;
   String sharedUserProfileImg;
 
-  TravelModel(
+  PostModel(
       {this.sharedDate,
       this.sharedImg,
       this.sharedLat,
@@ -21,7 +18,7 @@ class TravelModel extends BaseModel<TravelModel> {
       this.sharedUserName,
       this.sharedUserProfileImg});
 
-  TravelModel.fromJson(Map<String, dynamic> json) {
+  PostModel.fromJson(Map<String, dynamic> json) {
     sharedDate = json['sharedDate'];
     if (json['sharedImg'] != null) {
       sharedImg = new List<SharedImg>();
@@ -51,9 +48,20 @@ class TravelModel extends BaseModel<TravelModel> {
     data['sharedUserProfileImg'] = this.sharedUserProfileImg;
     return data;
   }
+}
 
-  @override
-  TravelModel fromJson(Map<String, Object> json) {
-    return TravelModel.fromJson(json);
+class SharedImg {
+  String url;
+
+  SharedImg({this.url});
+
+  SharedImg.fromJson(Map<String, dynamic> json) {
+    url = json['url'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['url'] = this.url;
+    return data;
   }
 }

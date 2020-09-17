@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:travel_blog/core/constants/constants.dart';
 import 'package:travel_blog/ui/detail/viewmodel/detail_viewmodel.dart';
+
 import 'package:travel_blog/ui/home/model/product_model.dart';
+import 'package:travel_blog/ui/profile_page/model/product_model.dart';
 import 'package:travel_blog/ui/maps/screen/LoadingMapCircular.dart';
 
 class DetailView extends DetailViewModel {
