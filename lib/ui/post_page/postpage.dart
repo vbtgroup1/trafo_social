@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
+import '../home/view/home.dart';
 
 class PostPage extends StatefulWidget {
   @override
@@ -38,13 +38,16 @@ class _BodyUIState extends State<BodyUI> {
         await (await yuklemeGorevi.onComplete).ref.getDownloadURL();
 
     var url = indirmeUrl.toString();
+    
+   
+   TextEditingController postYazisi = new TextEditingController();
+   String abc= postYazisi.text.toString();
 
     print("indirme urlsi: " + url);
 
     return url;
   }
 
-  /////////////////////////////////
   File resim;
   String resimYolu;
 
@@ -140,6 +143,12 @@ class _BodyUIState extends State<BodyUI> {
       ),
       onPressed: () {
         resmiGonder();
+        Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Home(),
+                ),
+              );
       },
       color: Color(0xff83a4d4),
       textColor: Colors.white,
@@ -171,6 +180,7 @@ class _BodyUIState extends State<BodyUI> {
           ),
           margin: EdgeInsets.all(20.0),
           child: new TextField(
+             controller: postYazisi,
             decoration: new InputDecoration(
                 border: new OutlineInputBorder(
                   borderRadius: const BorderRadius.all(
@@ -180,7 +190,7 @@ class _BodyUIState extends State<BodyUI> {
                 filled: true,
                 hintStyle: new TextStyle(color: Colors.grey[800]),
                 hintText:
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vehicula ligula eu ligula placerat dapibus ut lobortis purus. Aliquam erat volutpat.",
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vehicula ligula eu ligula placerat dapibus ut lobortis purus. Aliquam erat volutpat.",
                 fillColor: Colors.white70),
           ),
         ),
@@ -318,7 +328,17 @@ class _BodyUIState extends State<BodyUI> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Icon(Icons.arrow_back),
+          GestureDetector(
+            child: Icon(Icons.arrow_back),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Home(),
+                ),
+              );
+            },
+          ),
           Text(
             "Create a Post",
             style: GoogleFonts.montserrat(

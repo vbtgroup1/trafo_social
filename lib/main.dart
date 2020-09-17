@@ -6,6 +6,8 @@ import 'package:travel_blog/core/base/model/user_model.dart';
 import 'package:travel_blog/ui/auth/service/auth_service.dart';
 import 'package:travel_blog/ui/splash/splash.dart';
 
+import 'ui/post_page/postpage.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -22,7 +24,7 @@ class MyApp extends StatelessWidget {
     return StreamProvider<UserModel>.value(
       value: AuthService().user,
       child: MaterialApp(
-        home: Splash(),
+        home: PostPage(),
         debugShowCheckedModeBanner: false,
         title: 'Travel Blog',
       ),
