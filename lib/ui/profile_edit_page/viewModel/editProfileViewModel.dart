@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:gender_picker/source/enums.dart';
@@ -17,6 +18,7 @@ abstract class EditProfileViewModel extends State<EditProfile> {
 
   File pickedImage;
   final picker = ImagePicker();
+  String imageUrl;
 
   void saveGender(Gender gender) {
     this.selectedGender = gender;
@@ -29,7 +31,22 @@ abstract class EditProfileViewModel extends State<EditProfile> {
         isImagePicking = true;
         pickedImage = File(pickedFile.path);
       });
+      await uploadFile();
     }
+  }
+
+  Future uploadFile() async {
+    StorageReference storageReference =
+        FirebaseStorage.instance.ref().child('users/}');
+    StorageUploadTask uploadTask = storageReference.putFile(pickedImage);
+    await uploadTask.onComplete;
+    print('File Uploaded');
+    storageReference.getDownloadURL().then((fileURL) {
+      setState(() {
+        imageUrl = fileURL;
+        print('Resim Yüklendi : ' + imageUrl);
+      });
+    });
   }
 
   @override

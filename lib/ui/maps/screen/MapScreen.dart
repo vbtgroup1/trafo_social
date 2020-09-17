@@ -7,8 +7,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:travel_blog/ui/maps/key/key.dart';
 
-import '../CircularMapsFinder.dart';
-import '../FabButtons.dart';
+import '../utils/CircularMapsFinder.dart';
+import '../widgets/FabButtons.dart';
 
 class MapScreen extends StatefulWidget {
   @override
