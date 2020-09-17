@@ -55,6 +55,17 @@ class ProductModel extends BaseModel<ProductModel> {
   ProductModel fromJson(Map<String, Object> json) {
     return ProductModel.fromJson(json);
   }
+
+  compareTo(ProductModel b) {
+    DateTime ab = DateTime.parse(sharedDate);
+    DateTime abb = DateTime.parse(b.sharedDate);
+    int result = ab.compareTo(abb);
+    if (result == 1)
+      result = 0;
+    else
+      result = 1;
+    return result;
+  }
 }
 
 class SharedImg {
