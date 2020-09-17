@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:travel_blog/core/base/model/error_model.dart';
+import 'package:travel_blog/core/constants/constants.dart';
 import 'package:travel_blog/ui/auth/service/auth_service.dart';
 import 'package:travel_blog/ui/detail/view/detail.dart';
 import 'package:travel_blog/ui/home/model/product_model.dart';
 import 'package:travel_blog/ui/home/viewmodel/home_viewmodel.dart';
-import 'package:travel_blog/core/constants/constants.dart';
+import 'package:travel_blog/ui/maps/screen/LoadingMapCircular.dart';
 import 'package:travel_blog/ui/post_page/postpage.dart';
 import 'package:travel_blog/ui/profile_page/view/profile.dart';
 
@@ -247,7 +249,16 @@ class HomeView extends HomeViewModel {
   Row homeUserIconList(String lat, String long) {
     return Row(
       children: [
-        IconButton(icon: Icon(Icons.location_on), onPressed: () {}),
+        IconButton(
+            icon: Icon(Icons.location_on),
+            onPressed: () {
+              LatLng tempLatLng = LatLng(double.parse(lat), double.parse(long));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          LoadingMapCircular(true, latLng: tempLatLng)));
+            }),
         IconButton(icon: Icon(Icons.favorite), onPressed: () {}),
         IconButton(icon: Icon(Icons.bookmark_border), onPressed: () {})
       ],

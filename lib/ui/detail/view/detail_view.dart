@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:travel_blog/core/constants/constants.dart';
 import 'package:travel_blog/ui/detail/viewmodel/detail_viewmodel.dart';
 import 'package:travel_blog/ui/home/model/product_model.dart';
+import 'package:travel_blog/ui/maps/screen/LoadingMapCircular.dart';
 
 class DetailView extends DetailViewModel {
   final ProductModel homeProductModel;
@@ -188,7 +190,18 @@ class DetailView extends DetailViewModel {
   Row detailUserIconList() {
     return Row(
       children: [
-        IconButton(icon: Icon(Icons.location_on), onPressed: null),
+        IconButton(
+            icon: Icon(Icons.location_on),
+            onPressed: () {
+              double lat = double.parse(widget.homeProductModel.sharedLat);
+              double long = double.parse(widget.homeProductModel.sharedLong);
+              LatLng tempLatLng = LatLng(lat, long);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          LoadingMapCircular(true, latLng: tempLatLng)));
+            }),
         IconButton(icon: Icon(Icons.favorite), onPressed: null),
         IconButton(icon: Icon(Icons.bookmark_border), onPressed: null)
       ],
