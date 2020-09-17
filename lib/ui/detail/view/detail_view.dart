@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:travel_blog/core/constants/constants.dart';
 import 'package:travel_blog/ui/detail/viewmodel/detail_viewmodel.dart';
-
 import 'package:travel_blog/ui/home/model/product_model.dart';
-import 'package:travel_blog/ui/profile_page/model/product_model.dart';
 import 'package:travel_blog/ui/maps/screen/LoadingMapCircular.dart';
 
 class DetailView extends DetailViewModel {
@@ -31,18 +29,25 @@ class DetailView extends DetailViewModel {
   double get detailUserProfileImgHeight =>
       MediaQuery.of(context).size.width * 0.15;
   double get detailUserContainerVerticalMargin => 4.0;
+
   double get detailUserRadius => 30.0;
 
   //detailUserNameAndSharedDate
   double get detailUserNameAndSharedDateWidth =>
       MediaQuery.of(context).size.width * 0.35;
+
   double get detailUserNameAndSharedDatePaddingLeft => 10.0;
+
   double get detailUserNameTextSize =>
       MediaQuery.of(context).size.width * 0.045;
+
   double get detailSharedDateTextSize =>
       MediaQuery.of(context).size.width * 0.035;
-  String get detailUserName => widget.homeProductModel.sharedUserName;
-  String get detailSharedDate => widget.homeProductModel.sharedDate;
+
+  String get detailUserName => homeProductModel.sharedUserName;
+
+  String get detailSharedDate => homeProductModel.sharedDate;
+
   Color get detailSharedDateColor => Colors.grey[400];
 
   //detailContentText
@@ -81,7 +86,7 @@ class DetailView extends DetailViewModel {
       padding: EdgeInsets.all(detailBodyPadding),
       child: Column(
         children: [
-          imgListView(widget.homeProductModel),
+          imgListView(homeProductModel),
           detailUserContainer(),
           detailContentText(),
         ],
@@ -151,7 +156,7 @@ class DetailView extends DetailViewModel {
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(detailUserRadius)),
         child: Image.network(
-          widget.homeProductModel.sharedUserProfileImg,
+          homeProductModel.sharedUserProfileImg,
           fit: BoxFit.fill,
         ),
       ),
@@ -195,8 +200,8 @@ class DetailView extends DetailViewModel {
         IconButton(
             icon: Icon(Icons.location_on),
             onPressed: () {
-              double lat = double.parse(widget.homeProductModel.sharedLat);
-              double long = double.parse(widget.homeProductModel.sharedLong);
+              double lat = double.parse(homeProductModel.sharedLat);
+              double long = double.parse(homeProductModel.sharedLong);
               LatLng tempLatLng = LatLng(lat, long);
               Navigator.push(
                   context,
@@ -216,7 +221,7 @@ class DetailView extends DetailViewModel {
       child: Column(
         children: [
           Text(
-            widget.homeProductModel.sharedText,
+            homeProductModel.sharedText,
             textAlign: TextAlign.justify,
             style: AppConstants.appTextStyleContent,
           ),

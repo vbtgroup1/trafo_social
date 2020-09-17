@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travel_blog/ui/detail/view/detail.dart';
+import 'package:travel_blog/ui/home/model/product_model.dart';
 import 'package:travel_blog/ui/profile_edit_page/view/editProfile.dart';
-import 'package:travel_blog/ui/profile_page/model/product_model.dart';
 import 'package:travel_blog/ui/profile_page/viewmodel/profile_viewmodel.dart';
 
 class ProfileView extends ProfileViewModel {
