@@ -65,8 +65,6 @@ abstract class ProfileViewModel extends State<Profile> {
     foodList = await detailService.getFoodList();
     travelList = await detailService.getTravelList();
     userList = await detailService.getUserList();
-    print('userrrrr:');
-    print(userList.length);
 
     for (int i = 0; i < foodList.length; ++i) {
       if (foodList[i].sharedUserId == userID.toString()) {
