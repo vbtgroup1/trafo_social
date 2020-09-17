@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:travel_blog/info_screen/info_screen1.dart';
-import 'package:travel_blog/ui/home/view/home.dart';
 import 'package:travel_blog/ui/splash/showup.dart';
 import 'package:travel_blog/ui/wrapper.dart';
 
