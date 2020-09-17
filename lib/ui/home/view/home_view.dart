@@ -137,6 +137,7 @@ class HomeView extends HomeViewModel {
   }
 
   ListView listView(List<ProductModel> travelList) {
+    travelList.sort((a, b) => a.compareTo(b));
     return ListView.builder(
       itemCount: travelList.length,
       scrollDirection: Axis.vertical,
