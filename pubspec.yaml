@@ -49,6 +49,8 @@ dependencies:
   flutter_auth_buttons: ^0.10.0
   eva_icons_flutter: ^2.0.1
   flutter_signin_button: ^1.1.0
+  uuid: ^2.2.2
+
 
 
 dev_dependencies:

@@ -1,12 +1,18 @@
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart';
+import 'package:travel_blog/ui/maps/screen/LoadingMapCircular.dart';
+import 'package:travel_blog/ui/post_page/model/PostModel.dart';
+import 'package:travel_blog/ui/post_page/service/HttpSharePost.dart';
+import 'package:travel_blog/ui/post_page/service/IHttpSharePost.dart';
+import 'package:travel_blog/ui/profile_page/model/user_model.dart';
 
 class PostPage extends StatefulWidget {
   @override
@@ -30,47 +36,89 @@ class BodyUI extends StatefulWidget {
 class _BodyUIState extends State<BodyUI> {
   Future<String> resmiGonder() async {
     StorageReference resimYeri =
-        FirebaseStorage.instance.ref().child(resimYolu);
+        FirebaseStorage.instance.ref().child(resim.path);
 
     StorageUploadTask yuklemeGorevi = resimYeri.putFile(resim);
-
     var indirmeUrl =
         await (await yuklemeGorevi.onComplete).ref.getDownloadURL();
-
     var url = indirmeUrl.toString();
-
-    print("indirme urlsi: " + url);
-
     return url;
   }
 
-  /////////////////////////////////
   File resim;
-  String resimYolu;
+
+  String metin = "";
+  final picker = ImagePicker();
 
   Future resimAl() async {
-    var secilenResim = await ImagePicker.pickImage(source: ImageSource.gallery);
+    var secilenResim = await picker.getImage(source: ImageSource.gallery);
 
     setState(() {
-      resim = secilenResim;
-      resimYolu = basename(resim.path);
+      resim = File(secilenResim.path);
     });
   }
+
+  Future<UserModel> getKullaniciBilgileri() async {
+    String uid = FirebaseAuth.instance.currentUser.uid;
+    IHttpSharePost sharePost = HttpSharePost();
+    UserModel model = await sharePost.getPostUserModel(uid);
+    return model;
+  }
+
+  Future postuPaylas(
+      UserModel userModel, String resimUrl, LatLng latLng) async {
+    String userUid = FirebaseAuth.instance.currentUser.uid;
+    String currentDate = DateTime.now().year.toString() +
+        '-' +
+        DateTime.now().month.toString() +
+        '-' +
+        DateTime.now().day.toString();
+
+    PostModel postModel = PostModel(
+        sharedDate: currentDate,
+        sharedImg: resimUrl,
+        sharedLat: latLng.latitude.toString(),
+        sharedLong: latLng.longitude.toString(),
+        sharedText: metin,
+        sharedUserId: userUid.toString(),
+        sharedUserName: userModel.userName,
+        sharedUserProfileImg: userModel.userProfileImg);
+    IHttpSharePost sharePost = HttpSharePost();
+    sharePost.postData(postModel, isFoodSelected);
+  }
+
+  bool isUploadingData = false;
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          b1(),
-          b2(),
-          b3(),
-          b4(),
-          b5(),
-          b6(),
-          b7(),
-          b8(),
-        ],
+        child: Stack(children: [
+      Column(
+        children: [b1(), b2(), b3(), b4(), b6(), b7(), b8(context)],
+      ),
+      isUploadingData ? centerCircular() : SizedBox(),
+    ]));
+  }
+
+  Widget centerCircular() {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    return Container(
+      margin: EdgeInsets.only(top: height * 35 / 100, left: width * 10 / 100),
+      width: width * 80 / 100,
+      height: height * 30 / 100,
+      child: Card(
+        color: Colors.white70,
+        elevation: 10,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            CircularProgressIndicator(
+                strokeWidth: 5, backgroundColor: Colors.white10),
+            Text('Loading Location')
+          ],
+        ),
       ),
     );
   }
@@ -80,9 +128,7 @@ class _BodyUIState extends State<BodyUI> {
       margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0, bottom: 20.0),
       height: 200,
       width: 330,
-      child: Image.file(
-        resim,
-      ),
+      child: Image.file(resim),
     );
   }
 
@@ -113,11 +159,7 @@ class _BodyUIState extends State<BodyUI> {
             width: 200,
             child: SvgPicture.asset("assets/images/upload1.svg"),
           ),
-          Icon(
-            Icons.cloud_upload,
-            color: Colors.blueAccent,
-            size: 40.0,
-          ),
+          Icon(Icons.cloud_upload, color: Colors.blueAccent, size: 40.0),
           Text(
             "Upload a photo",
             style: GoogleFonts.montserrat(
@@ -130,7 +172,7 @@ class _BodyUIState extends State<BodyUI> {
     );
   }
 
-  RaisedButton b8() {
+  RaisedButton b8(BuildContext context) {
     return RaisedButton(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(40.0),
@@ -138,8 +180,24 @@ class _BodyUIState extends State<BodyUI> {
           color: Color(0xff83a4d4),
         ),
       ),
-      onPressed: () {
-        resmiGonder();
+      onPressed: () async {
+        setState(() {
+          isUploadingData = true;
+        });
+        String resimUrl = await resmiGonder();
+        UserModel userModel = await getKullaniciBilgileri();
+        LatLng latLng = await Navigator.push(context,
+            MaterialPageRoute(builder: (context) => LoadingMapCircular(false)));
+        if (latLng != null) {
+          //latLng burada geliyor
+          print(latLng.latitude.toString());
+          print(latLng.longitude.toString());
+        }
+        await postuPaylas(userModel, resimUrl, latLng);
+        Navigator.pop(context);
+        setState(() {
+          isUploadingData = false;
+        });
       },
       color: Color(0xff83a4d4),
       textColor: Colors.white,
@@ -148,7 +206,7 @@ class _BodyUIState extends State<BodyUI> {
         style: TextStyle(fontSize: 13),
       ),
       padding:
-          EdgeInsets.only(left: 100.0, right: 100.0, top: 15.0, bottom: 15.0),
+      EdgeInsets.only(left: 100.0, right: 100.0, top: 15.0, bottom: 15.0),
     );
   }
 
@@ -162,15 +220,19 @@ class _BodyUIState extends State<BodyUI> {
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
-                spreadRadius: 1,
-                blurRadius: 2,
-                offset: Offset(0, 3),
-              ),
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 1,
+                  blurRadius: 2,
+                  offset: Offset(0, 3)),
             ],
           ),
           margin: EdgeInsets.all(20.0),
           child: new TextField(
+            onChanged: (value) {
+              setState(() {
+                this.metin = value;
+              });
+            },
             decoration: new InputDecoration(
                 border: new OutlineInputBorder(
                   borderRadius: const BorderRadius.all(
@@ -194,70 +256,19 @@ class _BodyUIState extends State<BodyUI> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Text(
-            "Add a Text",
-            style: GoogleFonts.montserrat(
-                color: Colors.black,
-                fontSize: 15.0,
-                fontWeight: FontWeight.w300),
-          ),
+          Text("Add a Text",
+              style: GoogleFonts.montserrat(
+                  color: Colors.black,
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.w300)),
         ],
       ),
     );
   }
 
-  Container b5() {
-    return Container(
-      margin: EdgeInsets.only(left: 20.0, right: 20.0),
-      height: 120.0,
-      width: 400.0,
-      child: ListView.builder(
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) => Card(
-          semanticContainer: true,
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-          child: Opacity(
-            opacity: 0.99,
-            child: Container(
-              height: 120.0,
-              width: 140.0,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  alignment: Alignment.center,
-                  image: AssetImage(
-                    "assets/images/art.png",
-                  ),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              child: Container(
-                margin: EdgeInsets.only(right: 10.0),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Chip(
-                        label: new Text(
-                          "X",
-                          style: TextStyle(fontSize: 15.0),
-                        ),
-                        // deleteIcon: Icon(Icons.delete),
-                        //deleteIconColor: Colors.black,
-                      ),
-                    ]),
-              ),
-            ),
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          elevation: 5,
-          margin: EdgeInsets.all(10),
-        ),
-      ),
-    );
-  }
+  bool isFoodSelected = true;
+  Color colorIsSelected = Color(0xff83a4d4);
+  Color colorIsNotSelected = Color(0xffffffff);
 
   Container b3() {
     return Container(
@@ -267,26 +278,37 @@ class _BodyUIState extends State<BodyUI> {
           FlatButton(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(18.0),
-                side: BorderSide(color: Color(0xff83a4d4))),
-            onPressed: () {},
+                side: BorderSide(color: colorIsNotSelected)),
+            onPressed: () {
+              setState(() {
+                isFoodSelected = true;
+                colorIsSelected = Color(0xff83a4d4);
+                colorIsNotSelected = Color(0xffffffff);
+              });
+            },
+            color: colorIsSelected,
+            textColor: colorIsNotSelected,
             child: Text(
               "food".toUpperCase(),
-              style: TextStyle(
-                color: Color(0xff83a4d4),
-                fontSize: 14.0,
-              ),
+              style: TextStyle(fontSize: 14.0),
             ),
           ),
           SizedBox(
             width: 10.0,
           ),
-          RaisedButton(
+          FlatButton(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(18.0),
-                side: BorderSide(color: Color(0xff83a4d4))),
-            onPressed: () {},
-            color: Color(0xff83a4d4),
-            textColor: Colors.white,
+                side: BorderSide(color: colorIsSelected)),
+            onPressed: () {
+              setState(() {
+                isFoodSelected = false;
+                colorIsSelected = Color(0xffffffff);
+                colorIsNotSelected = Color(0xff83a4d4);
+              });
+            },
+            color: colorIsNotSelected,
+            textColor: colorIsSelected,
             child: Text("Travel".toUpperCase(), style: TextStyle(fontSize: 14)),
           ),
         ],
@@ -316,22 +338,19 @@ class _BodyUIState extends State<BodyUI> {
       margin: EdgeInsets.all(20.0),
       padding: EdgeInsets.only(top: 40.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Icon(Icons.arrow_back),
-          Text(
-            "Create a Post",
-            style: GoogleFonts.montserrat(
-                color: Colors.black,
-                fontSize: 25.0,
-                fontWeight: FontWeight.w400),
-          ),
-          Text(
-            "Save Drafts",
-            style: GoogleFonts.montserrat(
-                color: Colors.black,
-                fontSize: 15.0,
-                fontWeight: FontWeight.w300),
+          Expanded(flex: 1, child: Icon(Icons.arrow_back)),
+          Expanded(
+            flex: 9,
+            child: Center(
+              child: Text(
+                "Create a Post",
+                style: GoogleFonts.montserrat(
+                    color: Colors.black,
+                    fontSize: 25.0,
+                    fontWeight: FontWeight.w400),
+              ),
+            ),
           ),
         ],
       ),
