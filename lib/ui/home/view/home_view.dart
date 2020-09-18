@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:travel_blog/core/base/model/error_model.dart';
 import 'package:travel_blog/core/constants/constants.dart';
@@ -10,7 +11,6 @@ import 'package:travel_blog/ui/home/viewmodel/home_viewmodel.dart';
 import 'package:travel_blog/ui/maps/screen/LoadingMapCircular.dart';
 import 'package:travel_blog/ui/post_page/postpage.dart';
 import 'package:travel_blog/ui/profile_page/view/profile.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeView extends HomeViewModel {
   String autID = FirebaseAuth.instance.currentUser.uid;
@@ -61,11 +61,14 @@ class HomeView extends HomeViewModel {
   }
 
   AppBar buildAppBar(String userPicUrl) {
+    String image =
+        'http://www.pngall.com/wp-content/uploads/5/Profile-PNG-File.png';
+    if (userPicUrl != null) image = userPicUrl;
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 0,
       centerTitle: true,
-      leading: buildIconButtonProfile(userPicUrl),
+      leading: buildIconButtonProfile(image),
       actions: [
         buildIconButtonSearch(),
         buildFlatButtonLogOut(),
