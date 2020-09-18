@@ -22,7 +22,6 @@ class HomeService extends IHomeService {
   Future getUserData() async {
     print(autID);
     return await httpGet<UserModel>(
-        "https://fb-travel-app.firebaseio.com/userID/P8drHGRXyoVO5eiJGQyhPOlqaB73.json",
-        UserModel());
+        "https://fb-travel-app.firebaseio.com/userID/$autID.json", UserModel());
   }
 }

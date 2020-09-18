@@ -1,11 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:travel_blog/core/constants/constants.dart';
+import 'package:travel_blog/ui/auth/service/IRegisterService.dart';
+import 'package:travel_blog/ui/auth/service/RegisterService.dart';
 import 'package:travel_blog/ui/auth/service/auth_service.dart';
+import 'package:travel_blog/ui/profile_page/model/user_model.dart';
 
 class Register extends StatefulWidget {
   final Function toggleView;
+
   Register({this.toggleView});
 
   @override
@@ -141,26 +146,10 @@ class _SignInState extends State<Register> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SignInButton(
-          Buttons.Facebook,
-          mini: true,
-          onPressed: () {},
-        ),
-        SignInButton(
-          Buttons.LinkedIn,
-          mini: true,
-          onPressed: () {},
-        ),
-        SignInButton(
-          Buttons.Twitter,
-          mini: true,
-          onPressed: () {},
-        ),
-        SignInButton(
-          Buttons.Pinterest,
-          mini: true,
-          onPressed: () {},
-        ),
+        SignInButton(Buttons.Facebook, mini: true, onPressed: () {}),
+        SignInButton(Buttons.LinkedIn, mini: true, onPressed: () {}),
+        SignInButton(Buttons.Twitter, mini: true, onPressed: () {}),
+        SignInButton(Buttons.Pinterest, mini: true, onPressed: () {}),
       ],
     );
   }
@@ -202,16 +191,31 @@ class _SignInState extends State<Register> {
         onPressed: () async {
           if (_formKey.currentState.validate()) {
             dynamic result =
-                await _auth.registerWithEmailAndPassword(email, password);
+            await _auth.registerWithEmailAndPassword(email, password);
             if (result == null) {
               setState(() {
                 error = 'Please enter a valid email';
               });
+            } else {
+              String uid = FirebaseAuth.instance.currentUser.uid;
+              var user = FirebaseAuth.instance.currentUser;
+              UserModel tempModel = UserModel(
+                  userBirth: "2012-12-12",
+                  userEmail: user.email.toString(),
+                  userGender: "Male",
+                  userJob: "",
+                  userPass: password.toString(),
+                  userName: user.displayName ?? " ",
+                  userProfileImg: user.photoURL ??
+                      "http://www.pngall.com/wp-content/uploads/5/Profile-PNG-File.png");
+
+              IRegisterService registerService = RegisterService();
+              registerService.registerUserSaveData(tempModel, uid);
             }
           }
         },
         shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
         color: Colors.indigo[200],
         child: Text("Sign up"),
       ),
