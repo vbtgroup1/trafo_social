@@ -6,9 +6,9 @@ import 'package:travel_blog/ui/profile_page/model/user_model.dart';
 
 class HttpProfileService extends IHttpProfileService {
   @override
-  Future postUserInfo(UserModel model, String kullaniciId) async {
+  Future updateUserInfo(UserModel model, String kullaniciId) async {
     await http.put(
-        "https://fb-travel-app.firebaseio.com/user/$kullaniciId.json",
+        "https://fb-travel-app.firebaseio.com/userID/$kullaniciId.json",
         body: json.encode({
           'userBirth': model.userBirth,
           'userEmail': model.userEmail,

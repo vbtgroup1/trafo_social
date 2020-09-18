@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -129,8 +130,9 @@ abstract class EditProfileViewModel extends State<EditProfile> {
         userJob: userJob.toString(),
         userName: userName.toString(),
         userProfileImg: imageUrl);
+    String uid = FirebaseAuth.instance.currentUser.uid;
     IHttpProfileService httpProfileService = HttpProfileService();
-    await httpProfileService.postUserInfo(tempModel, "2");
+    await httpProfileService.updateUserInfo(tempModel, uid);
   }
 
   void nonSavedProfileState() {
