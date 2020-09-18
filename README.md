@@ -1,16 +1,26 @@
-# travel_blog
+# TraFo Social App
 
-A new Flutter project.
+![1](https://user-images.githubusercontent.com/25854605/93588558-437e4680-f9b4-11ea-80d2-8031c74ce724.gif)
+![2](https://user-images.githubusercontent.com/25854605/93588595-5133cc00-f9b4-11ea-815b-e5b3f2ab1d82.gif)
+![Untitled](https://user-images.githubusercontent.com/25854605/93588614-54c75300-f9b4-11ea-97db-c22e1c23ab81.gif)
 
-## Getting Started
+### Our Application Design
+![Ekran görüntüsü 2020-09-18 132103](https://user-images.githubusercontent.com/25854605/93588815-9e17a280-f9b4-11ea-99db-31532356d1e7.png)
 
-This project is a starting point for a Flutter application.
+### Technologies we use
+- Flutter 
+- Mvvm design pattern
+- Firebase Auth for register and login
+- Firebase Realtime Database
+- Firebase Storage
+- Google Maps Api for location selection
+- Adobe Xd for ui Design
+- Git version control
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Who we are?
+[Tuğba Yavuz](https://github.com/tugbayavuzz "Tuğba Yavuz")
+[Zeynep Yüksel](https://github.com/zeynepyuksel "Zeynep Yüksel")
+[Ömer Bitikçioğlu](https://github.com/omerbitikcioglu "Ömer Bitikçioğlu")
+[Canberk Bibican](https://github.com/canberkb8 "Canberk Bibican")
+[Süleyman Sezer](https://github.com/iamcodder "Süleyman Sezer")
+[Soner Karaevli](https://github.com/Soner97 "Soner Karaevli")
