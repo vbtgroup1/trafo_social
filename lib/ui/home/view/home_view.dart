@@ -66,10 +66,10 @@ class HomeView extends HomeViewModel {
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 0,
+      title: Text('Home', style: AppConstants.appTextStyleTitle),
       centerTitle: true,
       leading: buildIconButtonProfile(image),
       actions: [
-        buildIconButtonSearch(),
         buildFlatButtonLogOut(),
       ],
     );
@@ -81,9 +81,7 @@ class HomeView extends HomeViewModel {
         await _auth.signOut();
       },
       icon: Icon(Icons.exit_to_app),
-      label: Text(
-        'Log out',
-      ),
+      label: Text(''),
     );
   }
 
@@ -95,15 +93,6 @@ class HomeView extends HomeViewModel {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => Profile()));
       },
-    );
-  }
-
-  IconButton buildIconButtonSearch() {
-    return IconButton(
-      icon: Icon(Icons.search),
-      iconSize: MediaQuery.of(context).size.width * 0.08,
-      onPressed: () {},
-      color: Colors.black,
     );
   }
 

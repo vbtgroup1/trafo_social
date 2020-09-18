@@ -7,6 +7,8 @@ import 'package:travel_blog/ui/profile_page/service/IProfile_service.dart';
 import 'package:travel_blog/ui/profile_page/service/profile_service.dart';
 import 'package:travel_blog/ui/profile_page/view/profile.dart';
 
+UserModel myUser;
+
 abstract class ProfileViewModel extends State<Profile> {
   bool isLoading = false;
   final List<ProfileModel> detailList = [];
@@ -19,8 +21,6 @@ abstract class ProfileViewModel extends State<Profile> {
   int index = 0;
   bool isCompleted = false;
   int userID = 1;
-
-  UserModel myUser;
 
   @override
   void initState() {

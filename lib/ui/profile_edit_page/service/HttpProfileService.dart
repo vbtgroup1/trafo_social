@@ -15,7 +15,8 @@ class HttpProfileService extends IHttpProfileService {
           'userGender': model.userGender,
           'userJob': model.userJob,
           'userName': model.userName,
-          'userProfileImg': model.userProfileImg
+          'userProfileImg': model.userProfileImg,
+          'userPass': model.userPass
         }));
   }
 }

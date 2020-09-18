@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:travel_blog/core/base/model/user_model.dart';
-import 'package:travel_blog/ui/auth/view/auth.dart';
 import 'package:travel_blog/ui/home/view/home.dart';
+
+import 'auth/view/auth.dart';
 
 class Wrapper extends StatelessWidget {
   @override

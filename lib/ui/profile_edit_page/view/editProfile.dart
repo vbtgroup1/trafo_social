@@ -6,9 +6,7 @@ class EditProfile extends StatefulWidget {
   EditProfile(UserModel userModel) {
     this.userModel = userModel;
   }
-
   UserModel userModel = UserModel();
-
   @override
   EditProfileView createState() => EditProfileView();
 }

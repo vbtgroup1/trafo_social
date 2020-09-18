@@ -224,7 +224,7 @@ class ProfileView extends ProfileViewModel {
         IconButton(
           disabledColor: Colors.white,
           icon: Icon(Icons.edit),
-          onPressed: () {
+          onPressed: () async {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => EditProfile(myUser)));
           },
