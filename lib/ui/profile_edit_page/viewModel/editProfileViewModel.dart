@@ -17,7 +17,12 @@ abstract class EditProfileViewModel extends State<EditProfile> {
   bool buttonIsVisible = true;
   bool isImagePicking = false;
   List<TextEditingController> textEditingController;
-  List<String> textFieldsDefaultValues;
+  List<String> textFieldsDefaultValues = [
+    'Name',
+    'Email',
+    'Jobs',
+    'Date of Birth'
+  ];
   String dateTime;
   Gender selectedGender = Gender.Male;
   UserModel userModel;
@@ -33,7 +38,6 @@ abstract class EditProfileViewModel extends State<EditProfile> {
     for (int i = 0; i < 5; i++) {
       textEditingController.add(new TextEditingController());
     }
-    textFieldsDefaultValues = ['Name', 'Email', 'Jobs', 'Date of Birth'];
     userModel = widget.userModel;
     initGender();
     initDateTime();
@@ -83,9 +87,9 @@ abstract class EditProfileViewModel extends State<EditProfile> {
     super.dispose();
     textEditingController.forEach((element) {
       element.dispose();
+      isDefault = true;
+      isDateFirstPicker = true;
     });
-    isDefault = true;
-    isDateFirstPicker = true;
   }
 
   void editProfileState() {
@@ -119,20 +123,30 @@ abstract class EditProfileViewModel extends State<EditProfile> {
   }
 
   Future uploadModel() async {
-    String userName = this.textEditingController[0].text ?? userModel.userName;
-    String userEmail =
-        this.textEditingController[1].text ?? userModel.userEmail;
-    String userJob = this.textEditingController[2].text ?? userModel.userJob;
-    String userDate = this.textEditingController[3].text ?? userModel.userBirth;
-    String userGender =
-        this.textEditingController[4].text ?? userModel.userGender;
+    String userName = this.textEditingController[0].text.isNotEmpty
+        ? this.textEditingController[0].text
+        : userModel.userName;
+    String userEmail = this.textEditingController[1].text.isNotEmpty
+        ? this.textEditingController[1].text
+        : userModel.userEmail;
+    String userJob = this.textEditingController[2].text.isNotEmpty
+        ? this.textEditingController[2].text
+        : userModel.userJob;
+    String userDate = this.textEditingController[3].text.isNotEmpty
+        ? this.textEditingController[3].text
+        : userModel.userBirth;
+    String userGender = this.textEditingController[4].text.isNotEmpty
+        ? this.textEditingController[4].text
+        : userModel.userGender;
+
     UserModel tempModel = UserModel(
         userBirth: userDate.toString(),
         userEmail: userEmail.toString(),
         userGender: userGender.toString(),
         userJob: userJob.toString(),
         userName: userName.toString(),
-        userProfileImg: imageUrl);
+        userProfileImg: imageUrl,
+        userPass: userModel.userPass);
     String uid = FirebaseAuth.instance.currentUser.uid;
     IHttpProfileService httpProfileService = HttpProfileService();
     await httpProfileService.updateUserInfo(tempModel, uid);

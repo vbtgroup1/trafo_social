@@ -141,8 +141,9 @@ Widget profileImage(
     alignment: AlignmentDirectional.bottomEnd,
     children: [
       CircleAvatar(
-        backgroundImage:
-            isImagePicking ? FileImage(profileImage) : NetworkImage(image),
+        backgroundImage: isImagePicking
+            ? FileImage(profileImage)
+            : NetworkImage(imgLink.userProfileImg),
         radius: imageRadius,
       ),
       FloatingActionButton(
@@ -196,6 +197,7 @@ Widget textFields(String userValue, TextEditingController controller,
       child: TextField(
           onSubmitted: (value) {
             controller.text = value;
+            userValue = value;
           },
           controller: controller,
           decoration: InputDecoration(
