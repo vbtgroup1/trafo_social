@@ -43,7 +43,5 @@ abstract class HomeViewModel extends State<Home> {
 
   Future<void> getList() async {
     user = await homeService.getUserData();
-    foodList = await homeService.getFoodList();
-    travelList = await homeService.getTravelList();
   }
 }
