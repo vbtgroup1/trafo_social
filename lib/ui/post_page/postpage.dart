@@ -206,7 +206,7 @@ class _BodyUIState extends State<BodyUI> {
         style: TextStyle(fontSize: 13),
       ),
       padding:
-      EdgeInsets.only(left: 100.0, right: 100.0, top: 15.0, bottom: 15.0),
+          EdgeInsets.only(left: 100.0, right: 100.0, top: 15.0, bottom: 15.0),
     );
   }
 
