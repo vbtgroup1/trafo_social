@@ -41,17 +41,20 @@ abstract class EditProfileViewModel extends State<EditProfile> {
 
   void initGender() {
     setState(() {
-      if (userModel.userGender.toLowerCase() == 'female' ||
-          userModel.userGender.toLowerCase() == 'women') {
-        selectedGender = Gender.Female;
-      } else
-        selectedGender = Gender.Male;
+      if (userModel != null && userModel.userGender != null) {
+        if (userModel.userGender.toLowerCase() == 'female' ||
+            userModel.userGender.toLowerCase() == 'women') {
+          selectedGender = Gender.Female;
+        } else
+          selectedGender = Gender.Male;
+      }
     });
   }
 
   void initDateTime() {
     setState(() {
-      dateTime = userModel.userBirth;
+      if (userModel != null && userModel.userProfileImg != null)
+        dateTime = userModel.userBirth;
     });
   }
 
@@ -139,11 +142,16 @@ abstract class EditProfileViewModel extends State<EditProfile> {
     setState(() {
       isEditingData = false;
       buttonIsVisible = true;
-      textEditingController[0].text = userModel.userName;
-      textEditingController[1].text = userModel.userEmail;
-      textEditingController[2].text = userModel.userJob;
-      textEditingController[3].text = userModel.userBirth;
-      textEditingController[4].text = userModel.userGender;
+      if (userModel.userName != null)
+        textEditingController[0].text = userModel.userName;
+      if (userModel.userEmail != null)
+        textEditingController[1].text = userModel.userEmail;
+      if (userModel.userJob != null)
+        textEditingController[2].text = userModel.userJob;
+      if (userModel.userBirth != null)
+        textEditingController[3].text = userModel.userBirth;
+      if (userModel.userGender != null)
+        textEditingController[4].text = userModel.userGender;
     });
   }
 
