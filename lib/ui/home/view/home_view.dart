@@ -14,7 +14,6 @@ import 'package:travel_blog/ui/profile_page/view/profile.dart';
 
 class HomeView extends HomeViewModel {
   String autID = FirebaseAuth.instance.currentUser.uid;
-  static const storyListLength = 1000; // Dummy
   final AuthService _auth = AuthService();
   int _index = 0;
   FutureBuilder futureBuilder;
