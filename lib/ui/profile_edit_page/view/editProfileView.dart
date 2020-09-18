@@ -39,7 +39,7 @@ class EditProfileView extends EditProfileViewModel {
                   : noneditingTopBar(topBarHeight, context),
               SizedBox(height: topBottomPadding),
               profileImage(getImage, pickedImage, circleProfileImageRadius,
-                  isImagePicking, isEditingData, userModel.userProfileImg),
+                  isImagePicking, isEditingData, userModel),
               profileInfoList(userModel, textEditingController,
                   textFieldsDefaultValues, isEditingData),
               dateTimePicker(
@@ -112,34 +112,37 @@ Widget editingTopBar(double topBarHeight, Function savedProfileState,
   );
 }
 
-Widget editingProfileData(Function savedProfileState,
-    Function nonSavedProfileState) {
+Widget editingProfileData(
+    Function savedProfileState, Function nonSavedProfileState) {
   return Center(
       child: ListTile(
-        leading:
+    leading:
         GestureDetector(child: Icon(Icons.close), onTap: nonSavedProfileState),
-        trailing:
+    trailing:
         GestureDetector(child: Icon(Icons.check), onTap: savedProfileState),
-        title: Text(
-          "Edit Profile",
-          style: GoogleFonts.montserrat(
-              fontSize: 24, fontWeight: FontWeight.bold),
-        ),
+    title: Text(
+      "Edit Profile",
+      style: GoogleFonts.montserrat(fontSize: 24, fontWeight: FontWeight.bold),
+    ),
   ));
 }
 
-Widget profileImage(Function pickImageFromGallery,
+Widget profileImage(
+    Function pickImageFromGallery,
     File profileImage,
     double imageRadius,
     bool isImagePicking,
     bool isEditingData,
-    String imgLink) {
+    UserModel imgLink) {
+  String image =
+      'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
+  // if (imgLink != null) image = imgLink.userProfileImg;
   return Stack(
     alignment: AlignmentDirectional.bottomEnd,
     children: [
       CircleAvatar(
         backgroundImage:
-        isImagePicking ? FileImage(profileImage) : NetworkImage(imgLink),
+            isImagePicking ? FileImage(profileImage) : NetworkImage(image),
         radius: imageRadius,
       ),
       FloatingActionButton(
@@ -160,11 +163,14 @@ ListView profileInfoList(UserModel userModel, List textEditingController,
     itemCount: 3,
     itemBuilder: (context, index) {
       String info = "";
-      if (index == 0)
-        info = userModel.userName;
-      else if (index == 1)
-        info = userModel.userEmail;
-      else if (index == 2) info = userModel.userJob;
+      if (userModel != null) {
+        if (index == 0 && userModel.userName != null)
+          info = userModel.userName;
+        else if (index == 1 && userModel.userEmail != null)
+          info = userModel.userEmail;
+        else if (index == 2 && userModel.userJob != null)
+          info = userModel.userJob;
+      }
       return textFields(info, textEditingController[index],
           textFieldsDefaultValues[index], isEditingData);
     },
@@ -227,7 +233,8 @@ Widget genderPicker(TextEditingController controller, Function save,
 
 bool isDateFirstPicker = true;
 
-Widget dateTimePicker(TextEditingController controller,
+Widget dateTimePicker(
+    TextEditingController controller,
     String defaultValue,
     String dateTime,
     bool isEditingData,
@@ -246,7 +253,7 @@ Widget dateTimePicker(TextEditingController controller,
           child: TextField(
               controller: controller,
               decoration:
-              InputDecoration(labelText: defaultValue, enabled: false)),
+                  InputDecoration(labelText: defaultValue, enabled: false)),
         )),
     onTap: isEditingData ? getDateTime : null,
   );

@@ -29,9 +29,9 @@ class ProfileView extends ProfileViewModel {
                     child: Column(
                       children: <Widget>[
                         buildProfileImage(),
-                        buildSizedBox(_height),
-                        buildNameSurnameText(myUser.userName, _width),
-                        buildJobText(myUser.userJob, _width, _height),
+                        buildSizedBox(),
+                        buildNameSurnameText(),
+                        buildJobText(),
                         buildRowButtons(),
                         buildPosts(),
                       ],
@@ -145,16 +145,15 @@ class ProfileView extends ProfileViewModel {
     );
   }
 
-  Widget buildProfileImage() {
+  CircleAvatar buildProfileImage() {
+    String profileImage = defaultProfileImg;
     if (myUser != null) {
-      final profileImage = myUser.userProfileImg;
-      return CircleAvatar(
-        radius: _width < _height ? _width / 4 : _height / 4,
-        backgroundImage: NetworkImage(profileImage),
-      );
-    } else {
-      return SizedBox();
+      if (myUser.userProfileImg != null) profileImage = myUser.userProfileImg;
     }
+    return CircleAvatar(
+      radius: _width < _height ? _width / 4 : _height / 4,
+      backgroundImage: NetworkImage(profileImage),
+    );
   }
 
   EdgeInsets buildJobTextEdgeInsets(double _height, double _width) {
@@ -165,8 +164,11 @@ class ProfileView extends ProfileViewModel {
         bottom: _height / 30);
   }
 
-  Padding buildJobText(String job, double _width, double _height) {
-    if (job == null) job = ' ';
+  Padding buildJobText() {
+    String job = ' ';
+    if (myUser != null) {
+      if (myUser.userJob != null) job = myUser.userJob;
+    }
     return Padding(
         padding: buildJobTextEdgeInsets(_height, _width),
         child: Text(
@@ -179,16 +181,24 @@ class ProfileView extends ProfileViewModel {
         ));
   }
 
-  SizedBox buildSizedBox(double _height) {
+  SizedBox buildSizedBox() {
     return SizedBox(
       height: _height / 25.0,
     );
   }
 
-  Text buildNameSurnameText(String nameSurname, double _width) {
-    return Text(nameSurname,
+  Text buildNameSurnameText() {
+    String name = ' ';
+    if (myUser != null) {
+      if (myUser.userName != null) name = myUser.userName;
+    }
+    return Text(name,
         style: GoogleFonts.montserrat(
             fontSize: _width / 20, fontWeight: FontWeight.bold));
+    /*}
+    else {
+      return SizedBox();
+    }*/
   }
 
   Image buildBackgroundImage(String travel, double _height) {
