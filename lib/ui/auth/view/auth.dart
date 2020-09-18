@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:travel_blog/ui/auth/view/register.dart';
-import 'package:travel_blog/ui/auth/view/sign_in.dart';
+import 'package:travel_blog/ui/auth/view/logip_page.dart';
+import 'package:travel_blog/ui/auth/view/register_page.dart';
 
 class Auth extends StatefulWidget {
   @override

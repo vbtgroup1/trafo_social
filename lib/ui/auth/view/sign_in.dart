@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:travel_blog/core/constants/constants.dart';
 import 'package:travel_blog/ui/auth/service/auth_service.dart';
 
 class SignIn extends StatefulWidget {
@@ -22,16 +21,7 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          FlatButton.icon(
-              onPressed: () {
-                widget.toggleView();
-              },
-              icon: Icon(Icons.person),
-              label: Text('Register'))
-        ],
-      ),
+      appBar: buildAppBarSignIn(),
       body: Container(
           padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 20.0),
           child: Form(
@@ -92,6 +82,19 @@ class _SignInState extends State<SignIn> {
                   )
                 ],
               ))),
+    );
+  }
+
+  AppBar buildAppBarSignIn() {
+    return AppBar(
+      actions: [
+        FlatButton.icon(
+            onPressed: () {
+              widget.toggleView();
+            },
+            icon: Icon(Icons.person),
+            label: Text('Register'))
+      ],
     );
   }
 }
