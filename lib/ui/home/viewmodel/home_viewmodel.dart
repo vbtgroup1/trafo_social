@@ -3,12 +3,14 @@ import 'package:travel_blog/ui/home/model/product_model.dart';
 import 'package:travel_blog/ui/home/service/IHome_service.dart';
 import 'package:travel_blog/ui/home/service/home_service.dart';
 import 'package:travel_blog/ui/home/view/home.dart';
+import 'package:travel_blog/ui/profile_page/model/user_model.dart';
 
 abstract class HomeViewModel extends State<Home> {
   bool isLoading = false;
   List<ProductModel> foodList = [];
   List<ProductModel> travelList = [];
   IHomeService homeService;
+  UserModel user;
 
   @override
   void initState() {
@@ -40,6 +42,7 @@ abstract class HomeViewModel extends State<Home> {
   }
 
   Future<void> getList() async {
+    user = await homeService.getUserData();
     foodList = await homeService.getFoodList();
     travelList = await homeService.getTravelList();
   }
