@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:travel_blog/core/constants/constants.dart';
 import 'package:travel_blog/ui/splash/showup.dart';
 import 'package:travel_blog/ui/wrapper.dart';
 
@@ -60,8 +61,7 @@ class _SplashState extends State<Splash> {
                     child: Text(
                       "Travel Blog",
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: appTitleSize, fontWeight: FontWeight.bold),
+                      style: AppConstants.appTextStyleSplashTitle,
                     ),
                     delay: 2000,
                   ),

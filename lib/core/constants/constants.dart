@@ -19,6 +19,10 @@ class AppConstants {
   static const Color THEME_COLOR = Color.fromRGBO(227, 250, 252, 1);
 
   // Text Styles
+  static final TextStyle appTextStyleSplashTitle = GoogleFonts.montserrat(
+    color: Colors.black,
+    fontSize: 40.0,
+  );
   static final TextStyle appTextStyleTitle = GoogleFonts.montserrat(
     color: Colors.black,
     fontSize: 30.0,
