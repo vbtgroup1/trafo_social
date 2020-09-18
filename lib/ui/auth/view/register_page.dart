@@ -4,15 +4,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:travel_blog/core/constants/constants.dart';
 import 'package:travel_blog/ui/auth/service/auth_service.dart';
 
-class SignIn extends StatefulWidget {
+class Register extends StatefulWidget {
   final Function toggleView;
-  SignIn({this.toggleView});
+  Register({this.toggleView});
 
   @override
   _SignInState createState() => _SignInState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignInState extends State<Register> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
 
@@ -42,19 +42,19 @@ class _SignInState extends State<SignIn> {
                   colors: [const Color(0xff83a4d4), const Color(0xffffff)],
                 ),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(height: 60),
-                  buildContainerLoginImg(),
-                  Container(
-                    padding: EdgeInsets.only(left: 30, right: 30, top: 40),
-                    child: Form(
-                      key: _formKey,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 60),
+                    buildContainerLoginImg(),
+                    Container(
+                      padding: EdgeInsets.only(left: 30, right: 30, top: 40),
                       child: Column(
                         children: [
                           Text(
-                            "Login",
+                            "Register",
                             style: AppConstants.appTextStyleTitle,
                           ),
                           buildTextFormFieldEmail(),
@@ -62,27 +62,27 @@ class _SignInState extends State<SignIn> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              buildContainerLogInButton(),
+                              buildContainerRegisterButton(),
                             ],
                           ),
-                          buildGestureDetectorSignUp(context),
+                          buildGestureDetectorSignIn(context),
                           SizedBox(height: 55),
-                          buildRowLoginOptions()
+                          buildRowRegisterOptions()
                         ],
                       ),
+                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      height: 600,
+                      decoration: BoxDecoration(
+                        color: Colors.white24,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                     ),
-                    margin: EdgeInsets.symmetric(horizontal: 20),
-                    height: 600,
-                    decoration: BoxDecoration(
-                      color: Colors.white24,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  Text(
-                    error,
-                    style: TextStyle(color: Colors.red, fontSize: 14.0),
-                  )
-                ],
+                    Text(
+                      error,
+                      style: TextStyle(color: Colors.red, fontSize: 14.0),
+                    )
+                  ],
+                ),
               ),
             ),
           ],
@@ -128,16 +128,16 @@ class _SignInState extends State<SignIn> {
     );
   }
 
-  GestureDetector buildGestureDetectorSignUp(BuildContext context) {
+  GestureDetector buildGestureDetectorSignIn(BuildContext context) {
     return GestureDetector(
       onTap: () {
         widget.toggleView();
       },
-      child: buildRichTextSignUp(),
+      child: buildRichTextSignIn(),
     );
   }
 
-  Row buildRowLoginOptions() {
+  Row buildRowRegisterOptions() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -165,23 +165,25 @@ class _SignInState extends State<SignIn> {
     );
   }
 
-  RichText buildRichTextSignUp() {
+  RichText buildRichTextSignIn() {
     return RichText(
-        text: TextSpan(
-            text: 'Don\'t you have an account?',
-            style: TextStyle(
-              fontSize: 15,
-              color: Colors.blueGrey,
-            ),
-            children: <TextSpan>[
+      text: TextSpan(
+        text: 'Do you have an account?',
+        style: TextStyle(
+          fontSize: 15,
+          color: Colors.blueGrey,
+        ),
+        children: <TextSpan>[
           TextSpan(
-            text: '  Sign up',
+            text: '  Login',
             style: TextStyle(
               fontSize: 15,
               color: Colors.blueGrey,
             ),
           ),
-        ]));
+        ],
+      ),
+    );
   }
 
   Container buildContainerLoginImg() {
@@ -191,7 +193,7 @@ class _SignInState extends State<SignIn> {
         child: SvgPicture.asset("assets/images/loginn.svg"));
   }
 
-  Container buildContainerLogInButton() {
+  Container buildContainerRegisterButton() {
     return Container(
       height: 70,
       width: 100,
@@ -200,11 +202,10 @@ class _SignInState extends State<SignIn> {
         onPressed: () async {
           if (_formKey.currentState.validate()) {
             dynamic result =
-                await _auth.signInWithEmailAndPassword(email, password);
-
+                await _auth.registerWithEmailAndPassword(email, password);
             if (result == null) {
               setState(() {
-                error = 'Email or password is incorrect';
+                error = 'Please enter a valid email';
               });
             }
           }
@@ -212,7 +213,7 @@ class _SignInState extends State<SignIn> {
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
         color: Colors.indigo[200],
-        child: Text("Log in"),
+        child: Text("Sign up"),
       ),
     );
   }
