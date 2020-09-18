@@ -59,7 +59,7 @@ class _SplashState extends State<Splash> {
                   padding: EdgeInsets.symmetric(vertical: verticalPadding),
                   child: ShowUp(
                     child: Text(
-                      "Travel Blog",
+                      "TraFo",
                       textAlign: TextAlign.center,
                       style: AppConstants.appTextStyleSplashTitle,
                     ),

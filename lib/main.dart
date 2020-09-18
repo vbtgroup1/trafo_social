@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         home: Splash(),
         debugShowCheckedModeBanner: false,
-        title: 'Travel Blog',
+        title: 'TraFo',
       ),
     );
   }
