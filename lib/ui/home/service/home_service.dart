@@ -21,7 +21,6 @@ class HomeService extends IHomeService {
   @override
   Future<ProfileUserModel> getUserData() async {
     return await httpGet<ProfileUserModel>(
-        "https://fb-travel-app.firebaseio.com/userID/$autID.json",
-        ProfileUserModel());
+        AppConstants.USER_URL + "/$autID.json", ProfileUserModel());
   }
 }

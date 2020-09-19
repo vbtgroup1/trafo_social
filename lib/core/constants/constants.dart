@@ -15,7 +15,7 @@ class AppConstants {
   static const String BASE_URL = "https://fb-travel-app.firebaseio.com";
   static const String FOOD_URL = "$BASE_URL/productID/food.json";
   static const String TRAVEL_URL = "$BASE_URL/productID/traveller.json";
-  static const String USER_URL = "$BASE_URL/user.json";
+  static const String USER_URL = "$BASE_URL/userID";
 
   ///
   static const Color THEME_COLOR = Color.fromRGBO(227, 250, 252, 1);
