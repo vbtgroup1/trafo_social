@@ -10,7 +10,7 @@ abstract class HomeViewModel extends State<Home> {
   List<ProductModel> foodList = [];
   List<ProductModel> travelList = [];
   IHomeService homeService;
-  UserModel user;
+  ProfileUserModel user;
 
   @override
   void initState() {
@@ -41,7 +41,7 @@ abstract class HomeViewModel extends State<Home> {
     });
   }
 
-  Future<void> getList() async {
+  Future getList() async {
     user = await homeService.getUserData();
   }
 }

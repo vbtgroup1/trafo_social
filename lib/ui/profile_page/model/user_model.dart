@@ -1,6 +1,6 @@
 import 'package:travel_blog/core/base/model/base_model.dart';
 
-class UserModel extends BaseModel<UserModel> {
+class ProfileUserModel extends BaseModel<ProfileUserModel> {
   String userBirth;
   String userEmail;
   String userGender;
@@ -9,7 +9,7 @@ class UserModel extends BaseModel<UserModel> {
   String userPass;
   String userProfileImg;
 
-  UserModel(
+  ProfileUserModel(
       {this.userBirth,
       this.userEmail,
       this.userGender,
@@ -18,14 +18,15 @@ class UserModel extends BaseModel<UserModel> {
       this.userPass,
       this.userProfileImg});
 
-  UserModel.fromJson(Map<String, dynamic> json) {
-    userBirth = json['userBirth'];
-    userEmail = json['userEmail'];
-    userGender = json['userGender'];
-    userJob = json['userJob'];
-    userName = json['userName'];
-    userPass = json['userPass'];
-    userProfileImg = json['userProfileImg'];
+  factory ProfileUserModel.fromJson(Map<String, dynamic> json) {
+    return ProfileUserModel(
+        userBirth: json['userBirth'],
+        userEmail: json['userEmail'],
+        userGender: json['userGender'],
+        userJob: json['userJob'],
+        userName: json['userName'],
+        userPass: json['userPass'],
+        userProfileImg: json['userProfileImg']);
   }
 
   Map<String, dynamic> toJson() {
@@ -41,7 +42,7 @@ class UserModel extends BaseModel<UserModel> {
   }
 
   @override
-  UserModel fromJson(Map<String, Object> json) {
-    return UserModel.fromJson(json);
+  ProfileUserModel fromJson(Map<String, Object> json) {
+    return ProfileUserModel.fromJson(json);
   }
 }

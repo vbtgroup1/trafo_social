@@ -191,7 +191,7 @@ class _SignInState extends State<Register> {
         onPressed: () async {
           if (_formKey.currentState.validate()) {
             dynamic result =
-            await _auth.registerWithEmailAndPassword(email, password);
+                await _auth.registerWithEmailAndPassword(email, password);
             if (result == null) {
               setState(() {
                 error = 'Please enter a valid email';
@@ -199,7 +199,7 @@ class _SignInState extends State<Register> {
             } else {
               String uid = FirebaseAuth.instance.currentUser.uid;
               var user = FirebaseAuth.instance.currentUser;
-              UserModel tempModel = UserModel(
+              ProfileUserModel tempModel = ProfileUserModel(
                   userBirth: "2012-12-12",
                   userEmail: user.email.toString(),
                   userGender: "Male",
@@ -215,7 +215,7 @@ class _SignInState extends State<Register> {
           }
         },
         shape:
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
         color: Colors.indigo[200],
         child: Text("Sign up"),
       ),

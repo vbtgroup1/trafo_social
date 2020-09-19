@@ -7,7 +7,7 @@ import 'package:travel_blog/ui/profile_page/service/IProfile_service.dart';
 import 'package:travel_blog/ui/profile_page/service/profile_service.dart';
 import 'package:travel_blog/ui/profile_page/view/profile.dart';
 
-UserModel myUser;
+ProfileUserModel myUser;
 
 abstract class ProfileViewModel extends State<Profile> {
   bool isLoading = false;
@@ -68,7 +68,7 @@ abstract class ProfileViewModel extends State<Profile> {
     travelList = await detailService.getTravelList();
 
     String uid = FirebaseAuth.instance.currentUser.uid;
-    myUser = await detailService.getUserModel(uid);
+    myUser = (await detailService.getUserModel(uid)) as ProfileUserModel;
     // print('***'+myUser.)
 
     for (int i = 0; i < foodList.length; ++i) {

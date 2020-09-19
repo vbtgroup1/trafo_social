@@ -3,10 +3,12 @@ import 'package:travel_blog/ui/profile_edit_page/view/editProfileView.dart';
 import 'package:travel_blog/ui/profile_page/model/user_model.dart';
 
 class EditProfile extends StatefulWidget {
-  EditProfile(UserModel userModel) {
+  EditProfile(ProfileUserModel userModel) {
     this.userModel = userModel;
   }
-  UserModel userModel = UserModel();
+
+  ProfileUserModel userModel = ProfileUserModel();
+
   @override
   EditProfileView createState() => EditProfileView();
 }

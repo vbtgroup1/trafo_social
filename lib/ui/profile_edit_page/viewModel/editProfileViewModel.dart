@@ -25,7 +25,7 @@ abstract class EditProfileViewModel extends State<EditProfile> {
   ];
   String dateTime;
   Gender selectedGender = Gender.Male;
-  UserModel userModel;
+  ProfileUserModel userModel;
 
   File pickedImage;
   final picker = ImagePicker();
@@ -139,7 +139,7 @@ abstract class EditProfileViewModel extends State<EditProfile> {
         ? this.textEditingController[4].text
         : userModel.userGender;
 
-    UserModel tempModel = UserModel(
+    ProfileUserModel tempModel = ProfileUserModel(
         userBirth: userDate.toString(),
         userEmail: userEmail.toString(),
         userGender: userGender.toString(),

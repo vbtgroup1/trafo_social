@@ -1,6 +1,6 @@
 class PostModel {
   String sharedDate;
-  String sharedImg;
+  Map<String, dynamic> sharedImg;
   String sharedLat;
   String sharedLong;
   String sharedText;
