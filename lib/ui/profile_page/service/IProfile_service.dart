@@ -5,5 +5,5 @@ abstract class IProfileService {
   Future<List<ProductModel>> getFoodList();
   Future<List<ProductModel>> getTravelList();
 
-  Future<List<ProfileUserModel>> getUserModel(String uid);
+  Future<ProfileUserModel> getUserModel(String uid);
 }
