@@ -69,7 +69,6 @@ abstract class ProfileViewModel extends State<Profile> {
 
     String uid = FirebaseAuth.instance.currentUser.uid;
     myUser = await detailService.getUserModel(uid);
-    // print('***'+myUser.)
 
     for (int i = 0; i < foodList.length; ++i) {
       if (foodList[i].sharedUserId == uid) {
