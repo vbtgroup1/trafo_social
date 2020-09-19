@@ -133,7 +133,7 @@ Widget profileImage(
     double imageRadius,
     bool isImagePicking,
     bool isEditingData,
-    UserModel imgLink) {
+    ProfileUserModel imgLink) {
   String image =
       'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
   // if (imgLink != null) image = imgLink.userProfileImg;
@@ -156,7 +156,7 @@ Widget profileImage(
   );
 }
 
-ListView profileInfoList(UserModel userModel, List textEditingController,
+ListView profileInfoList(ProfileUserModel userModel, List textEditingController,
     List textFieldsDefaultValues, bool isEditingData) {
   return ListView.builder(
     physics: NeverScrollableScrollPhysics(),

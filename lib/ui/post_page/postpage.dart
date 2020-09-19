@@ -58,25 +58,29 @@ class _BodyUIState extends State<BodyUI> {
     });
   }
 
-  Future<UserModel> getKullaniciBilgileri() async {
+  Future<ProfileUserModel> getKullaniciBilgileri() async {
     String uid = FirebaseAuth.instance.currentUser.uid;
     IHttpSharePost sharePost = HttpSharePost();
-    UserModel model = await sharePost.getPostUserModel(uid);
+    ProfileUserModel model = await sharePost.getPostUserModel(uid);
     return model;
   }
 
   Future postuPaylas(
-      UserModel userModel, String resimUrl, LatLng latLng) async {
+      ProfileUserModel userModel, String resimUrl, LatLng latLng) async {
     String userUid = FirebaseAuth.instance.currentUser.uid;
-    String currentDate = DateTime.now().year.toString() +
-        '-' +
-        DateTime.now().month.toString() +
-        '-' +
-        DateTime.now().day.toString();
+
+    String month = DateTime.now().month.toString();
+    if (month.length == 1) month = '0$month';
+    String day = DateTime.now().day.toString();
+    if (day.length == 1) day = '0$day';
+    String year = DateTime.now().year.toString();
+    String currentDate = year + '-' + month + '-' + day;
+
+    Map<String, String> map = {'url': resimUrl};
 
     PostModel postModel = PostModel(
         sharedDate: currentDate,
-        sharedImg: resimUrl,
+        sharedImg: map,
         sharedLat: latLng.latitude.toString(),
         sharedLong: latLng.longitude.toString(),
         sharedText: metin,
@@ -185,7 +189,7 @@ class _BodyUIState extends State<BodyUI> {
           isUploadingData = true;
         });
         String resimUrl = await resmiGonder();
-        UserModel userModel = await getKullaniciBilgileri();
+        ProfileUserModel userModel = await getKullaniciBilgileri();
         LatLng latLng = await Navigator.push(context,
             MaterialPageRoute(builder: (context) => LoadingMapCircular(false)));
         if (latLng != null) {

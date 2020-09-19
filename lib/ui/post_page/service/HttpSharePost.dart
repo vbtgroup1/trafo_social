@@ -14,7 +14,7 @@ class HttpSharePost extends IHttpSharePost {
         "https://fb-travel-app.firebaseio.com/productID/$postLocation.json",
         body: json.encode({
           'sharedDate': model.sharedDate,
-          'sharedImg': model.sharedImg,
+          'sharedImg': {'0': model.sharedImg},
           'sharedLat': model.sharedLat,
           'sharedLong': model.sharedLong,
           'sharedText': model.sharedText,
@@ -25,8 +25,9 @@ class HttpSharePost extends IHttpSharePost {
   }
 
   @override
-  Future<UserModel> getPostUserModel(String uid) async {
+  Future<ProfileUserModel> getPostUserModel(String uid) async {
     return await httpGet(
-        "https://fb-travel-app.firebaseio.com/userID/$uid.json", UserModel());
+        "https://fb-travel-app.firebaseio.com/userID/WnbONX7iZCNjHsijSTFu5fL30nI2.json",
+        ProfileUserModel());
   }
 }
