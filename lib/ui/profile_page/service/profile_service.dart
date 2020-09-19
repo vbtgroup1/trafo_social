@@ -8,19 +8,19 @@ class ProfileService extends IProfileService {
   @override
   Future<List<ProductModel>> getFoodList() async {
     return await httpGet<ProductModel>(
-        "https://fb-travel-app.firebaseio.com/product/food.json",
+        "https://fb-travel-app.firebaseio.com/productID/food.json",
         ProductModel());
   }
 
   @override
   Future<List<ProductModel>> getTravelList() async {
     return await httpGet<ProductModel>(
-        "https://fb-travel-app.firebaseio.com/product/traveller.json",
+        "https://fb-travel-app.firebaseio.com/productID/traveller.json",
         ProductModel());
   }
 
   @override
-  Future<List<ProfileUserModel>> getUserModel(String uid) async {
+  Future<ProfileUserModel> getUserModel(String uid) async {
     return await httpGet(
         "https://fb-travel-app.firebaseio.com/userID/$uid.json",
         ProfileUserModel());
