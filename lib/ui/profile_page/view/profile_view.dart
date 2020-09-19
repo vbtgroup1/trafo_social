@@ -225,8 +225,11 @@ class ProfileView extends ProfileViewModel {
           disabledColor: Colors.white,
           icon: Icon(Icons.edit),
           onPressed: () async {
-            Navigator.push(context,
+            bool isEditinData = await Navigator.push(context,
                 MaterialPageRoute(builder: (context) => EditProfile(myUser)));
+            if (isEditinData != null && isEditinData) {
+              callItems();
+            }
           },
         ),
       ],

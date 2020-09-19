@@ -15,6 +15,7 @@ abstract class EditProfileViewModel extends State<EditProfile> {
   bool isEditingData = false;
   bool buttonIsVisible = true;
   bool isImagePicking = false;
+  bool isEditedData = false;
   List<TextEditingController> textEditingController;
   List<String> textFieldsDefaultValues = [
     'Name',
@@ -68,6 +69,11 @@ abstract class EditProfileViewModel extends State<EditProfile> {
     this.selectedGender = gender;
   }
 
+  Future<bool> finishScreen() async {
+    Navigator.pop(context, isEditedData);
+    return true;
+  }
+
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
     if (pickedFile != null) {
@@ -105,6 +111,7 @@ abstract class EditProfileViewModel extends State<EditProfile> {
     setState(() {
       isEditingData = false;
       buttonIsVisible = true;
+      isEditedData = true;
     });
     await uploadFile();
     await uploadModel();

@@ -10,7 +10,6 @@ import 'package:travel_blog/ui/profile_page/view/profile.dart';
 ProfileUserModel myUser;
 
 abstract class ProfileViewModel extends State<Profile> {
-  bool isLoading = false;
   final List<ProfileModel> detailList = [];
   List<ProductModel> foodList = [];
   List<ProductModel> travelList = [];
@@ -20,7 +19,7 @@ abstract class ProfileViewModel extends State<Profile> {
   List<ProductModel> posts = [];
   int index = 0;
   bool isCompleted = false;
-  int userID = 1;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -37,9 +36,23 @@ abstract class ProfileViewModel extends State<Profile> {
   @override
   void dispose() {
     super.dispose();
+    clearData();
+  }
+
+  void clearData() {
+    detailList.clear();
+    foodList.clear();
+    travelList.clear();
+    tempFoodList.clear();
+    tempTravelList.clear();
+    posts.clear();
+    isCompleted = false;
+    isLoading = false;
   }
 
   Future<void> callItems() async {
+    clearData();
+
     changeLoading();
     await getLists();
     changeLoading();
