@@ -93,7 +93,7 @@ class EditProfileView extends EditProfileViewModel {
       leading: GestureDetector(
           child: Icon(Icons.arrow_back_ios),
           onTap: () {
-            Navigator.of(context).pop();
+            Navigator.pop(context, isEditedData);
           }),
       title: Text('Profile',
           style: GoogleFonts.montserrat(
