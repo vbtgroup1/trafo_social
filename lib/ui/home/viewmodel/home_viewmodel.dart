@@ -31,7 +31,7 @@ abstract class HomeViewModel extends State<Home> {
 
   Future<void> callItems() async {
     changeLoading();
-    await getList();
+    await getUser();
     changeLoading();
   }
 
@@ -41,7 +41,7 @@ abstract class HomeViewModel extends State<Home> {
     });
   }
 
-  Future getList() async {
+  Future getUser() async {
     user = await homeService.getUserData();
   }
 }

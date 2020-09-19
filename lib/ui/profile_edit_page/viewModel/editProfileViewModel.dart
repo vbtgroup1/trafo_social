@@ -9,7 +9,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:travel_blog/ui/profile_edit_page/service/HttpProfileService.dart';
 import 'package:travel_blog/ui/profile_edit_page/service/IHttpProfileService.dart';
 import 'package:travel_blog/ui/profile_edit_page/view/editProfile.dart';
-import 'package:travel_blog/ui/profile_edit_page/view/editProfileView.dart';
 import 'package:travel_blog/ui/profile_page/model/user_model.dart';
 
 abstract class EditProfileViewModel extends State<EditProfile> {
@@ -23,9 +22,12 @@ abstract class EditProfileViewModel extends State<EditProfile> {
     'Jobs',
     'Date of Birth'
   ];
+  List<bool> textFieldDefaultIsEntered = [true, true, true];
   String dateTime;
   Gender selectedGender = Gender.Male;
   ProfileUserModel userModel;
+  bool isDefault = true;
+  bool isDateFirstPicker = true;
 
   File pickedImage;
   final picker = ImagePicker();
@@ -123,6 +125,8 @@ abstract class EditProfileViewModel extends State<EditProfile> {
   }
 
   Future uploadModel() async {
+    String imgUrl = isImagePicking ? imageUrl : userModel.userProfileImg;
+
     String userName = this.textEditingController[0].text.isNotEmpty
         ? this.textEditingController[0].text
         : userModel.userName;
@@ -145,7 +149,7 @@ abstract class EditProfileViewModel extends State<EditProfile> {
         userGender: userGender.toString(),
         userJob: userJob.toString(),
         userName: userName.toString(),
-        userProfileImg: imageUrl,
+        userProfileImg: imgUrl,
         userPass: userModel.userPass);
     String uid = FirebaseAuth.instance.currentUser.uid;
     IHttpProfileService httpProfileService = HttpProfileService();
