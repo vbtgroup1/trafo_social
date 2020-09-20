@@ -27,45 +27,48 @@ class EditProfileView extends EditProfileViewModel {
     circularRadius = deviceWidth * 20 / 100;
     genderIconSize = deviceWidth * 30 / 100;
     return SafeArea(
-      child: Container(
-        color: Colors.white,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              isEditingData
-                  ? editingTopBar(
-                      topBarHeight, savedProfileState, nonSavedProfileState)
-                  : noneditingTopBar(topBarHeight, context),
-              SizedBox(height: topBottomPadding),
-              profileImage(getImage, pickedImage, circleProfileImageRadius,
-                  isImagePicking, isEditingData, userModel),
-              profileInfoList(userModel, textEditingController,
-                  textFieldsDefaultValues, isEditingData),
-              dateTimePicker(
-                  textEditingController[3],
-                  textFieldsDefaultValues[3],
-                  dateTime,
-                  isEditingData,
-                  context,
-                  getDateTime),
-              genderPicker(textEditingController[4], saveGender, isEditingData,
-                  selectedGender),
-              buttonIsVisible ? editButton(editProfileState) : SizedBox(),
-              // GestureDetector(
-              //   onTap: () async {
-              //     LatLng latLng = await Navigator.push(
-              //         context,
-              //         MaterialPageRoute(
-              //             builder: (context) => LoadingMapCircular(false)));
-              //     if (latLng != null) {
-              //       //latLng burada geliyor
-              //       print(latLng.latitude.toString());
-              //       print(latLng.longitude.toString());
-              //     }
-              //   },
-              // ),
-            ],
+      child: WillPopScope(
+        onWillPop: finishScreen,
+        child: Container(
+          color: Colors.white,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                isEditingData
+                    ? editingTopBar(
+                        topBarHeight, savedProfileState, nonSavedProfileState)
+                    : noneditingTopBar(topBarHeight, context),
+                SizedBox(height: topBottomPadding),
+                profileImage(getImage, pickedImage, circleProfileImageRadius,
+                    isImagePicking, isEditingData, userModel),
+                profileInfoList(userModel, textEditingController,
+                    textFieldsDefaultValues, isEditingData),
+                dateTimePicker(
+                    textEditingController[3],
+                    textFieldsDefaultValues[3],
+                    dateTime,
+                    isEditingData,
+                    context,
+                    getDateTime),
+                genderPicker(textEditingController[4], saveGender,
+                    isEditingData, selectedGender),
+                buttonIsVisible ? editButton(editProfileState) : SizedBox(),
+                // GestureDetector(
+                //   onTap: () async {
+                //     LatLng latLng = await Navigator.push(
+                //         context,
+                //         MaterialPageRoute(
+                //             builder: (context) => LoadingMapCircular(false)));
+                //     if (latLng != null) {
+                //       //latLng burada geliyor
+                //       print(latLng.latitude.toString());
+                //       print(latLng.longitude.toString());
+                //     }
+                //   },
+                // ),
+              ],
+            ),
           ),
         ),
       ),
@@ -90,7 +93,7 @@ class EditProfileView extends EditProfileViewModel {
       leading: GestureDetector(
           child: Icon(Icons.arrow_back_ios),
           onTap: () {
-            Navigator.of(context).pop();
+            Navigator.pop(context, isEditedData);
           }),
       title: Text('Profile',
           style: GoogleFonts.montserrat(
@@ -134,9 +137,6 @@ class EditProfileView extends EditProfileViewModel {
       bool isImagePicking,
       bool isEditingData,
       ProfileUserModel imgLink) {
-    String image =
-        'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
-    // if (imgLink != null) image = imgLink.userProfileImg;
     return Stack(
       alignment: AlignmentDirectional.bottomEnd,
       children: [
