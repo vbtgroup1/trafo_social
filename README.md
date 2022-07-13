@@ -23,4 +23,4 @@
 - [Ömer Bitikçioğlu](https://github.com/omerbitikcioglu "Ömer Bitikçioğlu")
 - [Canberk Bibican](https://github.com/canberkb8 "Canberk Bibican")
 - [Süleyman Sezer](https://github.com/iamcodder "Süleyman Sezer")
-- [Soner Karaevli](https://github.com/Soner97 "Soner Karaevli")
+- [Soner Karaevli](https://github.com/sonerxdev "Soner Karaevli")
